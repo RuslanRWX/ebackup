@@ -1,7 +1,9 @@
+
+<html>
 # backup
-Start with:
-	-backup       - Incremental backup
-	-backup-full  - Full backup
+Start with:<br>
+	-backup       - Incremental backup<br>
+	-backup-full  - Full backup<br>
 	-status       - Show status
 	-check        - Check backup, returns 0 - everything's OK, 1 - something's wrong  (for zabbix)
 	-check-l      - Check last backup
@@ -14,4 +16,4 @@ Start with:
 	-ssh-keygen   - Create authentication key
 	-configure    - Configure or reconfigure your config file 
 	-rotate       - Rotate log files
-
+<html>
