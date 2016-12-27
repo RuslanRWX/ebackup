@@ -18,7 +18,7 @@ Start with:<br>
 	-rotate       - Rotate log files<br>
 
 
-files.txt -- file with directorys to backup 
-files.exclude.txt  -- file with exclude directories 
+files.txt -- file with directorys to backup<br> 
+files.exclude.txt  -- file with exclude directories<br> 
 exclude.mysqldb.txt  -- script backuping all of databases but you can exclude some databases
 <html>
