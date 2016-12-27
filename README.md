@@ -16,4 +16,9 @@ Start with:<br>
 	-ssh-keygen   - Create authentication key<br>
 	-configure    - Configure or reconfigure your config file<br> 
 	-rotate       - Rotate log files<br>
+
+
+files.txt -- file with directorys to backup 
+files.exclude.txt  -- file with exclude directories 
+exclude.mysqldb.txt  -- script backuping all of databases but you can exclude some databases
 <html>
