@@ -11,7 +11,7 @@ Start with:
 	-mysql-dump   - Start only mysqldump ( without sending backup file to backup server)
 	-command      - Execute remote command on backup server, example:./backup/backup.sh -command "ls -al"
 	-com          - Same as -command, example:./backup.sh -com "cd ~/niroo; ls -al"
-	-ssh-keygen   - Create authentication key  
+	-ssh-keygen   - Create authentication key
 	-configure    - Configure or reconfigure your config file 
 	-rotate       - Rotate log files
 
