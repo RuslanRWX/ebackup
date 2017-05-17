@@ -287,12 +287,12 @@ echo -e "Start with:
 case $1 in 
      -backup)	
 PidFun
-if   echo MySQLCheck is $MySQLCheck | grep -E -w "[Yy][Ee][Ss]" ; then { MySQLCheck | tee -a  $Log; } fi 
-if   echo MySQL is $MySQL | grep -E -w "[Yy][Ee][Ss]" ; then {  MySQLDump | tee -a $Log; } fi 
-if   echo MongoDB is $MongoDB | grep -E  "[Yy][Ee][Ss]"; then { MongoDump | tee -a $Log ; }  fi
-    StoreBackupInc | tee -a  $Log 
-if   echo MySQL is $MySQL Mongodb is $MongoDB  | grep -E -w "[Yy][Ee][Ss]" ; then { StoreBackupMysql | tee -a $Log; } fi 
-    Arsync | tee -a $Log
+if   echo MySQLCheck is $MySQLCheck | grep -E -w "[Yy][Ee][Ss]" ; then { MySQLCheck 2>&1 | tee -a  $Log; } fi 
+if   echo MySQL is $MySQL | grep -E -w "[Yy][Ee][Ss]" ; then {  MySQLDump 2>&1 | tee -a $Log; } fi 
+if   echo MongoDB is $MongoDB | grep -E  "[Yy][Ee][Ss]"; then { MongoDump 2>&1 | tee -a $Log ; }  fi
+    StoreBackupInc 2>&1 | tee -a  $Log 
+if   echo MySQL is $MySQL Mongodb is $MongoDB  | grep -E -w "[Yy][Ee][Ss]" ; then { StoreBackupMysql 2>&1 | tee -a $Log; } fi 
+    Arsync 2>&1 | tee -a $Log
 Finish 
     ;;
    -check|check)
@@ -304,19 +304,19 @@ Finish
     -backup-full)
 PidFun
     echo "Start Full Backup" | tee -a $Log
-	if   echo MySQL is $MySQL | grep -E -w "[Yy][Ee][Ss]" ; then {  MySQLDump | tee -a $Log; } fi 
-     	StoreBackup | tee -a $Log 
-        StoreBackupMysql | tee -a $Log
-        Arsync | tee -a $Log 
+	if   echo MySQL is $MySQL | grep -E -w "[Yy][Ee][Ss]" ; then {  MySQLDump 2>&1 | tee -a $Log; } fi 
+     	StoreBackup 2>&1 | tee -a $Log 
+        StoreBackupMysql 2>&1 | tee -a $Log
+        Arsync 2>&1 | tee -a $Log 
 Finish 
     ;;
     -backup-mysql)
 PidFun 
     echo "Start MySQL Dump and send to backup server" | tee -a $Log
-    MySQLDump | tee -a $Log 
-    StoreBackupMysql | tee -a $Log
+    MySQLDump 2>&1 | tee -a $Log 
+    StoreBackupMysql 2>&1 | tee -a $Log
     OnlyMysql="OnlyM"
-    Arsync | tee -a $Log 
+    Arsync 2>&1 | tee -a $Log 
 Finish 
     ;;
     -mysql-check)
