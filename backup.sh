@@ -1,5 +1,5 @@
 #!/bin/sh
-###################################### Version 2.2.1 #######################################################
+###################################### Version 2.2.2 #######################################################
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/local/ssl/bin
 checkr=`whereis rsync | grep bin | awk -F":" '{ print $2 }'`
 if [ "$checkr" = "" ]; then { echo "ERROR: You should install rsync!"; exit 1;  } fi
