@@ -7,6 +7,8 @@ Start with:<br>
 	-status       - Show status<br>
 	-check        - Check backup, returns 0 - everything's OK, 1 - something's wrong  (for zabbix)<br>
 	-check-l      - Check last backup<br>
+       	-check-rsync  - Check rsync errors, return 0 - everthing Ok, 1 - something wrong (for zabbix)<br>
+	-check-rsync-l - Check rsync errors, full errors<br>
 	-clean        - Clean backup files<br>
 	-backup-mysql - Start mysqldump and send to backup server<br>
 	-mysql-check  - Start mysqlcheck<br>
