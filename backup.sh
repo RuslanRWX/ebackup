@@ -1,5 +1,5 @@
 #!/bin/sh
-###################################### Version 2.2.2 #######################################################
+###################################### Version 2.2.3 #######################################################
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/local/ssl/bin
 checkr=`whereis rsync | grep bin | awk -F":" '{ print $2 }'`
 if [ "$checkr" = "" ]; then { echo "ERROR: You should install rsync!"; exit 1;  } fi
@@ -117,6 +117,16 @@ SUFFIXDump=`cat ${Path}/lastback.txt 2>> /dev/null || echo "null" `
 ssh -o ConnectTimeout=10 -p${Port}  $bkusr@$bksrv "if [ -d ~/${dir}/${SUFFIXDump} ]; then { echo -e 'Ok\nlast backup: '${SUFFIXDump}; } else { echo -e 'Error\nNeed check!\nUse: ./backup.sh -com \"cd ~/$dir; ls -al\"'; } fi" 2>> /dev/null || echo "Error: connect to host "$bksrv 
 }
 
+CheckRsync () {
+
+Res=`grep -i -E  "Disk quota|Broken pipe|rsync error" $Log` 
+if [ ! -n "$Res" ]; then  { echo '0'; } else { echo '1'; } fi
+}
+
+CheckRsyncl () {
+grep  -i -A2 -B2 --color=auto -E "Disk quota|Broken pipe|rsync error" $Log
+}
+
 Command () {
 ssh -p${Port}  $bkusr@$bksrv "$Com"
 }
@@ -189,20 +199,6 @@ cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat 
 #        echo $PathParm
 if [ "$os" = "FreeBSD" ]; then { sedkey='-i .back'; }; fi
 if [ "$os" = "Linux" ]; then { sedkey='-i.back '; } fi
-#echo ip
-#sed -i "" "s/$IPold/bksrv=$IPParm/;" backup.conf
-#echo user
-#sed -i "" "s/$UPold/bkusr=$UserParm/;" backup.conf
-#echo path
-#sed  -i "" "s/$Pold/dbbackuppath=$PathParm/;" backup.conf
-#echo days
-#sed -i "" "s/$Dayold/Days=$DayParm/;" backup.conf
-#echo MySQL
-#sed -i "" "s/$MPold/MySQL=$MysqlParm/;" backup.conf
-#echo MySQLCeck
-#sed  -i "" "s/$MCPold/MySQLCheck=$MysqlCParm/;" backup.conf
-#echo Mongo
-#sed -i ""  "s/$Mdbold/MongoDB=$MongoParm/;" backup.conf
 
 sed  $sedkey "s/$IPold/bksrv=$IPParm/; s/$UPold/bkusr=$UserParm/; s/$Pold/dbbackuppath=$PathParm/; s/$Dayold/Days=$DayParm/; s/$MPold/MySQL=$MysqlParm/; s/$MCPold/MySQLCheck=$MysqlCParm/; s/$Mdbold/MongoDB=$MongoParm/;" $Path/backup.conf
 
@@ -269,8 +265,10 @@ echo -e "Start with:
 	-backup       - Incremental backup
 	-backup-full  - Full backup
 	-status       - Show status
-	-check        - Check backup, returns 0 - everything's OK, 1 - something's wrong  (for zabbix)
+	-check        - Check backup, return 0 - everything OK, 1 - something wrong  (for zabbix)
 	-check-l      - Check last backup
+	-check-rsync  - Check rsync errors, return 0 - everthing Ok, 1 - something wrong (for zabbix) 
+	-check-rsync-l - Check rsync errors, full errors
 	-clean        - Clean backup files
 	-backup-mysql - Start mysqldump and send to backup server
 	-mysql-check  - Start mysqlcheck
@@ -342,6 +340,12 @@ Finish
     ;;
     -rotate)
     RotateLog
+    ;;
+    -check-rsync)
+    CheckRsync
+    ;;
+    -check-rsync-l)
+    CheckRsyncl
     ;;
     -status)
     if [ -f $Pid ]; then { echo "backup is running as pid "`cat $Pid`; } else { echo "backup is not running";  } fi
