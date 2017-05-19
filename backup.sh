@@ -118,7 +118,6 @@ ssh -o ConnectTimeout=10 -p${Port}  $bkusr@$bksrv "if [ -d ~/${dir}/${SUFFIXDump
 }
 
 CheckRsync () {
-
 Res=`grep -i -E  "Disk quota|Broken pipe|rsync error" $Log` 
 if [ ! -n "$Res" ]; then  { echo '0'; } else { echo '1'; } fi
 }
