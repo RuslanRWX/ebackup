@@ -1,14 +1,14 @@
 #!/bin/sh
 ###################################### Version 2.2.3 #######################################################
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/local/ssl/bin
-checkr=`whereis rsync | grep bin | awk -F":" '{ print $2 }'`
+checkr=$(whereis rsync | grep bin | awk -F":" '{ print $2 }')
 if [ "$checkr" = "" ]; then { echo "ERROR: You should install rsync!"; exit 1;  } fi
 Path=$( cd "$( dirname "$0" )" && pwd )
 . $Path/backup.conf
 
 trap "rm $Pid; exit" 1 2 15
 
-os=`uname`
+os=$(uname)
 if [ "$os" = "FreeBSD" ]; then { download="fetch"; }; fi
 if [ "$os" = "Linux" ]; then { download="wget"; } fi
 
@@ -60,7 +60,7 @@ MongoDump () {
 }
 
 Arsync () {
-Acount=`ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir; ls -F " | wc -l`
+	Acount=$(ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir; ls -F " | wc -l)
 	if [ "$OnlyMysql" = "OnlyM"  ]
 	then
 		ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir && mv Processing-$SUFFIX $SUFFIX-Only-Mysqldump"
@@ -107,18 +107,18 @@ ssh -p${Port}  $bkusr@$bksrv "if [ ! -d ~/$dir ]; then { /bin/mkdir -p ~/$dir;  
 }
 
 CheckBackup () {
-#SURFFIXDump=`date +'%Y-%m-%d'`
-SUFFIXDump=`cat ${Path}/lastback.txt 2>> /dev/null || echo "null" `
+#SURFFIXDump=$(date +'%Y-%m-%d')
+SUFFIXDump=$(cat ${Path}/lastback.txt 2>> /dev/null || echo "null" )
 ssh -o ConnectTimeout=5 -p${Port}  $bkusr@$bksrv " if [ -d ~/${dir}/${SUFFIXDump} ]; then { echo '0'; } else { echo '1'; } fi" 2>>/dev/null || echo "1"
 }
 
 CheckBackupAll () {
-SUFFIXDump=`cat ${Path}/lastback.txt 2>> /dev/null || echo "null" `
+SUFFIXDump=$(cat ${Path}/lastback.txt 2>> /dev/null || echo "null" )
 ssh -o ConnectTimeout=10 -p${Port}  $bkusr@$bksrv "if [ -d ~/${dir}/${SUFFIXDump} ]; then { echo -e 'Ok\nlast backup: '${SUFFIXDump}; } else { echo -e 'Error\nNeed check!\nUse: ./backup.sh -com \"cd ~/$dir; ls -al\"'; } fi" 2>> /dev/null || echo "Error: connect to host "$bksrv 
 }
 
 CheckRsync () {
-Res=`grep -i -E  "Disk quota|Broken pipe|rsync error" $Log` 
+Res=$(grep -i -E  "Disk quota|Broken pipe|rsync error" $Log) 
 if [ ! -n "$Res" ]; then  { echo '0'; } else { echo '1'; } fi
 }
 
@@ -137,8 +137,8 @@ Clean () {
     }
 
 SSHkey () {
-	DefIP=`grep -E 'bksrv=' $Path/backup.conf | awk -F'=' '{ print $2 }'`
-	DefU=`grep -E 'bkusr=' $Path/backup.conf | awk -F'=' '{ print $2 }'`
+	DefIP=$(grep -E 'bksrv=' $Path/backup.conf | awk -F'=' '{ print $2 }')
+	DefU=$(grep -E 'bkusr=' $Path/backup.conf | awk -F'=' '{ print $2 }')
 	read -p "	|->  IP backup server  [ $DefIP ] :" IPParm
 	: ${IPParm:="$DefIP"}
 	read -p "	|->  User for remote server [ $DefU ] :" UserParm
@@ -154,7 +154,7 @@ cd $Path
 IPfunk () {
 	echo  "Start of configuration. You can see your backup configuration file after that"
 	read -p "	|->  IP of backup server: " IPParm
-	IPold=`grep -E "bksrv=" $Path/backup.conf`
+	IPold=$(grep -E "bksrv=" $Path/backup.conf)
 #	if echo $IPParm | grep -v -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"; then  { echo Bad IP adress; exit 1; } fi
 }	
 SSHkeygen () {
@@ -165,33 +165,33 @@ cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat 
 }
         IPfunk  	
 	read -p "	|->  User for remote server: " UserParm
-	 UPold=`grep -E "bkusr=" $Path/backup.conf`
+	UPold=$(grep -E "bkusr=" $Path/backup.conf)
         echo  "		|->  Please show your df:"
 	df -h
 	read -p "	|->  Backup path for MySQL dump :[/var/db-backup/] " PathParm
 	 : ${PathParm:="/var/db-backup/"}
 	 if [ ! -d $PathParm  ]; then { mkdir $PathParm;  } fi
-	 Pold=`grep -E 'dbbackuppath=' $Path/backup.conf `
+	 Pold=$(grep -E 'dbbackuppath=' $Path/backup.conf )
         read -p "	|->  Number of days of keeping backup files ?:[15] " DayParm
 	 : ${DayParm:="15"}
 	if echo $DayParm | grep -v -E "[0-9]"; then { echo Days cannot be numbers; exit 1; } fi
-	 Dayold=`grep -E  "Days=" $Path/backup.conf`
+	Dayold=$(grep -E  "Days=" $Path/backup.conf)
 	read -p "	|->  Need backup of MySQL:[YES] " MysqlParm
 	 : ${MysqlParm:="YES"}
-	 MPold=`grep -E "MySQL=" $Path/backup.conf`
+	 MPold=$(grep -E "MySQL=" $Path/backup.conf)
 	read -p "	|->  Need check|repair of MySQL:[NO] " MysqlCParm
 	 : ${MysqlCParm:="NO"}
-	 MCPold=`grep -E "MySQLCheck=" $Path/backup.conf`
+	 MCPold=$(grep -E "MySQLCheck=" $Path/backup.conf)
 	 read -p "	|->  If you have mysql-server, would you like to configure access to MySQL? (~/.my.cnf):[YES] " MysqlAccess
 	 : ${MysqlAccess:="YES"}
     	if [ ! -f ~/.my.cnf ] && [ $MysqlAccess = "YES" ]; then { createmycnf;   } fi 
 	read -p "	|->  Need backup of Mongodb:[NO] " MongoParm
 	 : ${MongoParm:="NO"}
-	 Mdbold=`grep -E  "MongoDB=" $Path/backup.conf`
+	 Mdbold=$(grep -E  "MongoDB=" $Path/backup.conf)
          echo $Pold | sed "s/\//\\\\\//g" > /tmp/Pold.txt
          echo $PathParm | sed "s/\//\\\\\//g" > /tmp/PathParm.txt
-         Pold=`cat /tmp/Pold.txt`
-         PathParm=`cat  /tmp/PathParm.txt`
+	 Pold=$(cat /tmp/Pold.txt)
+	 PathParm=$(cat  /tmp/PathParm.txt)
 	 rm /tmp/Pold.txt
 	 rm /tmp/PathParm.txt
 #        echo $Pold
@@ -248,12 +248,12 @@ then
  echo "Start backup"
 fi 
 if   echo Rotation is $rotate  | grep -E -w "[Yy][Ee][Ss]" ; then { RotateLog; } fi	     
-echo "Start backup "`date` | tee -a $Log 
+echo "Start backup "$(date) | tee -a $Log 
 #    /bin/rm -f $Pid
 }
 
 Finish () {
-echo "Finish "`date` | tee -a $Log 
+echo "Finish "$(date) | tee -a $Log 
 echo "Log file:  "$Log
 /bin/rm -f $Pid
 }
@@ -347,7 +347,7 @@ Finish
     CheckRsyncl
     ;;
     -status)
-    if [ -f $Pid ]; then { echo "backup is running as pid "`cat $Pid`; } else { echo "backup is not running";  } fi
+	    if [ -f $Pid ]; then { echo "backup is running as pid "$(cat $Pid); } else { echo "backup is not running";  } fi
     ;;
         *)
 	help
