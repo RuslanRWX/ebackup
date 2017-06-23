@@ -13,7 +13,7 @@ Start with:<br>
 	-backup-mysql - Start mysqldump and send to a backup server<br>
 	-mysql-check  - Start mysqlcheck<br>
 	-mysql-dump   - Start only mysqldump ( without sending a backup file to a backup server)<br>
-	-command      - Execute remote command on backup server, example:./backup/backup.sh -command "ls -al"<br>
+	-command      - Execute remote command on a backup server, example:./backup/backup.sh -command "ls -al"<br>
 	-com          - Same as -command, example:./backup.sh -com "cd ~/niroo; ls -al"<br>
 	-ssh-keygen   - Create authentication key<br>
 	-configure    - Configure or reconfigure your config file<br> 
