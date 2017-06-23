@@ -269,10 +269,10 @@ echo -e "Start with:
 	-check-rsync  - Check rsync errors, return 0 - everthing Ok, 1 - something wrong (for zabbix) 
 	-check-rsync-l - Check rsync errors, full errors
 	-clean        - Clean backup files
-	-backup-mysql - Start mysqldump and send to backup server
+	-backup-mysql - Start mysqldump and send to a backup server
 	-mysql-check  - Start mysqlcheck
-	-mysql-dump   - Start only mysqldump ( without sending backup file to backup server)
-	-command      - Execute remote command on backup server, example:$Path/backup.sh -command \"ls -al\"
+	-mysql-dump   - Start only mysqldump ( without sending a backup file to a backup server)
+	-command      - Execute remote command on a backup server, example:$Path/backup.sh -command \"ls -al\"
 	-com          - Same as -command, example:$Path/backup.sh -com \"cd ~/$dir; ls -al\"
 	-ssh-keygen   - Create authentication key  
 	-configure    - Configure or reconfigure your config file 

@@ -10,9 +10,9 @@ Start with:<br>
        	-check-rsync  - Check rsync errors, return 0 - everthing Ok, 1 - something wrong (for zabbix)<br>
 	-check-rsync-l - Check rsync errors, full errors<br>
 	-clean        - Clean backup files<br>
-	-backup-mysql - Start mysqldump and send to backup server<br>
+	-backup-mysql - Start mysqldump and send to a backup server<br>
 	-mysql-check  - Start mysqlcheck<br>
-	-mysql-dump   - Start only mysqldump ( without sending backup file to backup server)<br>
+	-mysql-dump   - Start only mysqldump ( without sending a backup file to a backup server)<br>
 	-command      - Execute remote command on backup server, example:./backup/backup.sh -command "ls -al"<br>
 	-com          - Same as -command, example:./backup.sh -com "cd ~/niroo; ls -al"<br>
 	-ssh-keygen   - Create authentication key<br>
