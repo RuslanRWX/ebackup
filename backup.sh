@@ -15,7 +15,7 @@ if [ "$os" = "Linux" ]; then { download="wget"; } fi
 createmycnf() { 
 	echo "create my.cnf"
         cd /tmp
-	$download http://pub.host4.biz/mysql/.my.cnf
+	$download https://raw.githubusercontent.com/ruslansvs2/backup/master/.my.cnf
 	read -p "User for mysqldump [root]: " User
 	 : ${User:="root"}
         read -p "Password for user: " Pass
