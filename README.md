@@ -1,8 +1,7 @@
 
 ### backup.sh 
 backup.sh - is a simple backup script for Linux or FreeBDS OS systems using shell (sh). 
-
-#Ability: 
+Ability: 
    - Full backup file system 
    - Incremental backup file system 
    - Check status and status  for zabbix monitoring 
