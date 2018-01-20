@@ -32,11 +32,11 @@ Start with:
 	-ssh-keygen   - Create authentication key
 	-configure    - Configure or reconfigure your config file 
 	-rotate       - Rotate log files
+
+backup.conf - main configuration file
+files.txt - the file with directories to backup
+files.exclude.txt - the file with exclude directories
+exclude.mysqldb.txt - the script backup all of databases but you can exclude some of it
 ```
 
-files.txt -- the file with directories to backup
-
-files.exclude.txt  -- the file with exclude directories 
-
-exclude.mysqldb.txt  --the script backup all of databases but you can exclude some of it
 

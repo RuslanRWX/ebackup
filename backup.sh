@@ -1,4 +1,6 @@
 #!/bin/sh
+# Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
+#
 ###################################### Version 2.2.3 #######################################################
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/local/ssl/bin
 checkr=$(whereis rsync | grep bin | awk -F":" '{ print $2 }')
@@ -277,6 +279,11 @@ echo -e "Start with:
 	-ssh-keygen   - Create authentication key  
 	-configure    - Configure or reconfigure your config file 
 	-rotate       - Rotate log files
+
+backup.conf - main configuration file
+files.txt - the file with directories to backup
+files.exclude.txt - the file with exclude directories
+exclude.mysqldb.txt - the script backup all of databases but you can exclude some of it
 	"
 }
 # ======================================== Action ======================================
