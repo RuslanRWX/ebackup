@@ -165,6 +165,13 @@ echo "Enter password for "$UserParm"@"$IPParm
 cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
 
 }
+
+CronTask () {
+read -p "Please, enter timestamp in cron format [1 1 * * *]: " CronTaskDate
+ : ${CronTaskDate:="1 1 * * *"}
+echo " $CronTaskDate root $Path/backup.sh -backup >> /dev/null 2>&1 " >> /etc/crontab
+}
+
         IPfunk  	
 	read -p "	|->  User for remote server: " UserParm
 	UPold=$(grep -E "bkusr=" $Path/backup.conf)
@@ -206,6 +213,9 @@ sed  $sedkey "s/$IPold/bksrv=$IPParm/; s/$UPold/bkusr=$UserParm/; s/$Pold/dbback
 	read -p "	|->  Do you want to create ssh-key?:[YES] " sshkey
 	 : ${sshkey:="YES"}
 if   echo ssh-key is $sshkey | grep -E  "[Yy][Ee][Ss]" ; then { SSHkeygen; } fi 
+	read -p "        |->  Do you want to create backup cron task?:[NO] " CronTaskParm
+         : ${CronTaskParm:="NO"}
+if   echo Cron task job is $CronTaskParm | grep -E "[Yy][Ee][Ss]" ; then CronTask; fi
 
 echo "Success !!!"
 
