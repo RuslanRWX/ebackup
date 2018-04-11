@@ -150,12 +150,6 @@ echo "Enter password for "$UserParm"@"$IPParm
 cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
 }
 
-CronTask () {
-read -p "Please, enter timestamp in cron format [1 1 * * *]: " CronTaskDate
- : ${CronTaskDate:="1 1 * * *"}
-echo " $CronTaskDate root $Path/backup.sh -backup >> /dev/null 2>&1 " >> /etc/crontab
-}
-
 Configure () {
 cd $Path
 
@@ -171,6 +165,13 @@ echo "Enter password for "$UserParm"@"$IPParm
 cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
 
 }
+
+CronTask () {
+read -p "Please, enter timestamp in cron format [1 1 * * *]: " CronTaskDate
+ : ${CronTaskDate:="1 1 * * *"}
+echo " $CronTaskDate root $Path/backup.sh -backup >> /dev/null 2>&1 " >> /etc/crontab
+}
+
         IPfunk  	
 	read -p "	|->  User for remote server: " UserParm
 	UPold=$(grep -E "bkusr=" $Path/backup.conf)
