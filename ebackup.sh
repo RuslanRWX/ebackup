@@ -322,7 +322,7 @@ echo "Log file:  "$Log
 
 
 help () {
-echo -e "Start with:
+echo    "Start with:
 	-backup       - Incremental backup
 	-backup-full  - Full backup
 	-status       - Show status
