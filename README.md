@@ -220,7 +220,8 @@ You will find it in /etc/crontab
 
 ```
 tial -1 /etc/crontab
-1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1``` 
+1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1
+``` 
 
 
 Now let’s have a closer look at the configuration process.  
