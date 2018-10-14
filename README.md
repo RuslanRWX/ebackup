@@ -6,7 +6,7 @@
 
 Action:
 1. [Installation](#installation)
-    - [Before installation](#bifore-installation)
+    - [Before installation](#before-installation)
     - [Clone project from Github repository](#)
     - [Go to directory and list files](#)
 2. [Configuration by using the script](#)
