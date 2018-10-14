@@ -234,6 +234,17 @@ Cron_def () {
 
 
 CronTask () {
+echo "Each line of a crontab file represents a job, and looks like this::
+	┌───────────── minute (0 - 59)
+	│ ┌───────────── hour (0 - 23)
+	│ │ ┌───────────── day of the month (1 - 31)
+	│ │ │ ┌───────────── month (1 - 12)
+	│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+	│ │ │ │ │                                   7 is also Sunday on some systems)
+	│ │ │ │ │
+	│ │ │ │ │
+ 	* * * * * command to execute    
+"
 	read -p "Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: " CronTaskDate
         : ${CronTaskDate:="1 1 * * *"}
         echo " $CronTaskDate root $Path/ebackup.sh -backup >> /dev/null 2>&1 " >> /etc/crontab

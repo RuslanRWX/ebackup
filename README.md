@@ -203,6 +203,16 @@ Enter password for test@127.0.0.1
 test@127.0.0.1's password: 
         |->  Do you want to create backup cron task?:[YES] y
 Cron task job is y
+Each line of a crontab file represents a job, and looks like this::
+	┌───────────── minute (0 - 59)
+	│ ┌───────────── hour (0 - 23)
+	│ │ ┌───────────── day of the month (1 - 31)
+	│ │ │ ┌───────────── month (1 - 12)
+	│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+	│ │ │ │ │                                   7 is also Sunday on some systems)
+	│ │ │ │ │
+	│ │ │ │ │
+ 	* * * * * command to execute 
 Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: 
 Success !!!
 ````
@@ -237,12 +247,10 @@ Overwrite (y/n)? n
 I didn’t want to lose my key. After that, the script will add your public key to the remote backup server. 
 
 ```Do you want to create backup cron task?:[YES]  y ``` - In this last question, the script can add the backup task to your cron.   
-```
-Add job to the crontab file (/etc/crontab), enter a timestamp in [cron format](#https://en.wikipedia.org/wiki/Cron), default [1 1 * * *]:   
 
-You will find it in /etc/crontab  
-1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1 
-```
+```Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: ```-   
+
+
 You can now check all the settings in the main configuration file: 
 
 ```bash

@@ -11,3 +11,9 @@ ass="asdss"
 
 
 echo $name
+
+echo <<EOF ww
+wdw
+qdq
+qdqw
+EOF
