@@ -84,7 +84,9 @@ exclude.mysqldb.txt - the script backups all of a databases but you can exclude 
 ```
 
 
-## Installation
+
+Installation
+---
 
 
 - Before installation 
