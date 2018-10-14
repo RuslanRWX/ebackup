@@ -209,11 +209,11 @@ Success !!!
 
 Now let’s have a closer look at the configuration process.  
 
-```bash|-> IP or domain of backup server: 127.0.0.1```  - In this step, you have to add your remote backup server  
+```|-> IP or domain of backup server: 127.0.0.1```  - In this step, you have to add your remote backup server  
 You can specify IP or hostname of backup server. In my example, I added localhost as a remote backup server.
  
-```bash|->  User for remote server: test``` -  username witch exists on a remote backup server that you have access to. 
-```bash|-> How many days you want to keep the backup files ?:[15] 3``` - In this step, you should define how many copies you want to keep on a backup server.
+```|->  User for remote server: test``` -  username witch exists on a remote backup server that you have access to. 
+```|-> How many days you want to keep the backup files ?:[15] 3``` - In this step, you should define how many copies you want to keep on a backup server.
 
 
 |->  Do you want to configure a MySQL backup:[YES] yes  -- if you have a MySQL server, you can back up your databases using this script. The script uses mysqldump client utility, its parameters you can configure in configuration file. The answer should be “yes” or “YES”. 
