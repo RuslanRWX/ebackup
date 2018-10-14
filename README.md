@@ -207,7 +207,75 @@ test@127.0.0.1's password:
 Cron task job is y
 Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: 
 Success !!!
+
 ```
+Now let’s have a closer look at the configuration process.  
+
+```bash|-> IP or domain of backup server: 127.0.0.1```  - In this step, you have to add your remote backup server  
+You can specify IP or hostname of backup server. In my example, I added localhost as a remote backup server.
+ 
+```bash|->  User for remote server: test``` -  username witch exists on a remote backup server that you have access to. 
+```bash|-> How many days you want to keep the backup files ?:[15] 3``` - In this step, you should define how many copies you want to keep on a backup server.
 
 
+|->  Do you want to configure a MySQL backup:[YES] yes  -- if you have a MySQL server, you can back up your databases using this script. The script uses mysqldump client utility, its parameters you can configure in configuration file. The answer should be “yes” or “YES”. 
+This output of df -h command can help you choose a storage for databases backup:  -- This output can help you choose a directory for backup  databases.
+Backup path for MySQL dump :[/var/db-backup/]     -- choose a directory for MySQL dump files 
 
+Do you want to start mysqlcheck before dumping:[NO] n    --  This can be useful for MyISAM data storage engine. If you don’t use it then leave the parameter as no.
+
+Would you like to configure access to MySQL? (~/.my.cnf):[YES] y  --  You can configure access to MySQL server on the fly. You have to be prepared input username and password of a MySQL user. If you had a local configuration file ~/.my.cnf for mysql-client it will be saved as ~/.my.cnf.back.  
+
+Do you want to back up Mongodb:[NO]  -- If you have MongoDB, you can back up databases by setting this parameter to YES. The script will be using a mongodump tool to create a backup.  
+
+ Do you want to create ssh-key?:[YES]  -- This step is a little bit specific, you can create ssh-key for having access to a remote backup server. You need to be prepared to input user’s password of the remote backup server. If you already have ssh-key, the script will ask you to overwrite it: 
+
+/home/ruslan/.ssh/id_rsa already exists.
+Overwrite (y/n)? n
+
+I didn’t want to lose my key. After that, the script will add your public key to the remote backup server. 
+
+ Do you want to create backup cron task?:[YES]  y -- In this last question, the script can add the backup task to your cron.   
+
+Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]:   
+
+You will find it in /etc/crontab  
+1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1 
+
+You can now check all the settings in the main configuration file: 
+```bash
+#cat ebackup.conf 
+# Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
+#
+###################################### Version 2.2.4 #######################################################
+# Directory on backup server
+dir=`hostname`
+# Backup server 
+bksrv=127.0.0.1
+# User on backup server
+bkusr=test
+# SSH port
+Port=22
+# Path for mysqldump
+dbbackuppath=/var/db-backup/
+# Number of days of keeping backups  
+Days=3
+# Suffix for backup file
+SUFFIX=`date +"%Y-%m-%d-%H%M%S"`
+# File pid 
+Pid=/var/run/backup.pid
+# Dump mysql YES|NO
+MySQL=yes
+# Mysqlcheck and repair (only for MyISAM)
+MySQLCheck=NO
+# Mysqldump Keys 
+MysqldumpKey='--opt  --routines'
+# Dump MongoDB
+MongoDB=no
+# Log file
+Log=/var/log/backup.log
+# Rotation of log files YES|NO 
+rotate=YES
+# Number of logs to keep
+rotateQu=7
+```
