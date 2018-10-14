@@ -216,6 +216,10 @@ Each line of a crontab file represents a job, and looks like this::
 Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: 
 Success !!!
 ````
+You will find it in /etc/crontab
+
+```1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1``` 
+
 
 Now let’s have a closer look at the configuration process.  
 
