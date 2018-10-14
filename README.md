@@ -89,7 +89,7 @@ exclude.mysqldb.txt - the script backups all of a databases but you can exclude 
 
 
 
-- Before installation 
+#### Before installation 
 
 >Note: You have to have a remote backup server to store your archives.
 
@@ -110,7 +110,7 @@ Limit count of backup copies depends on a storage capacity on the remote backup 
 
 
 Now start installation and configuration 
-- Clone project from GitHub repository: 
+#### Clone project from GitHub repository: 
 
 >Note: Create a directory where you want to store script, for example in your home directory:
 ```bash cd & mkdir bin & cd bin```  
