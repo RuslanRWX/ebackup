@@ -165,10 +165,9 @@ Zbx_export_templates.xml - Zabbix template file.
 ## 2. Configuration by using the script  
 With the following command you should configure your *ebackup.sh* script. You can also configure it by editing the *ebackup.conf* file:
 
-```bash
+```
+
 #./ebackup.sh  -configure
-
-
 Start configuration. You can see your backup configuration file after that
 	|->  IP or domain of backup server: 127.0.0.1
 	|->  User for a remote backup server: test
@@ -195,7 +194,7 @@ Password for user: test
 Port default [3306]: 
 Host default [localhost]: 
 We have saved your old .my.cnf file, you can find it there: ~/.my.cnf.back
-	|->  Do you want to back up MongoDB:[NO] !!
+	|->  Do you want to back up MongoDB:[NO] 
 	|->  Do you want to create ssh-key?:[YES] 
 ssh-key is YES
 Generating public/private rsa key pair.
@@ -207,8 +206,8 @@ test@127.0.0.1's password:
 Cron task job is y
 Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: 
 Success !!!
+````
 
-```
 Now let’s have a closer look at the configuration process.  
 
 ```bash|-> IP or domain of backup server: 127.0.0.1```  - In this step, you have to add your remote backup server  
