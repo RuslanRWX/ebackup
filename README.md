@@ -5,39 +5,55 @@
 - [Description](#description)
 
 Action:
-1. [Installation](#installation)
+1. [Installation](#1-installation)
 
-    1.1 [Before installation](#before-installation)
+    1.1 [Before installation](#11-before-installation)
     
     1.2 [Clone project from Github repository](#)
     
     1.2 [Go to directory and list files](#)
 2. [Configuration by using the script](#)
 3. [Configuration by redact a configuration file](#)
-   - [ebackup.conf](#)
-   - [files.txt](#)
-   - [files.exclude.txt](#) 
-   - [exclude.mysqldb.txt](#) 
+   
+   3.1 [ebackup.conf](#)
+   
+   3.2 [files.txt](#)
+   
+   3.3 [files.exclude.txt](#) 
+   
+   3.4 [exclude.mysqldb.txt](#) 
 4. [Testing script](#)
-   - [Test to proper connect](#)
+   4.1 [Test to proper connect](#)
 5. [Featches](#) 
-   - [Start backup](#)
-   - [Start full backup](#)
-   - [Check status](#)
-   - [Check status of archives](#)
-   - [Check rsync errors](#)
-   - [Clean](#)
-   - [Backup and check MySQL](#)
+   
+   5.1 [Start backup](#)
+   
+   5.2 [Start full backup](#)
+   
+   5.3 [Check status](#)
+   
+   5.4 [Check status of archives](#)
+   
+   5.5 [Check rsync errors](#)
+   
+   5.6 [Clean](#)
+   
+   5.7 [Backup and check MySQL](#)
 6. [Backup](#backup)
-   - [Backup without sent data to a backup server](#) 
-   - [MySQL Check](#)
-   - [Execute command on the remote backup server](#) 
-   - [Configuration option](#) 
-   - [Rotation](#) 
+   
+   6.1 [Backup without sent data to a backup server](#) 
+   
+   6.2 [MySQL Check](#)
+   
+   6.3 [Execute command on the remote backup server](#) 
+   
+   6.4 [Configuration option](#) 
+   
+   6.5 [Rotation](#) 
 7. [Troubleshooting](#trableshooting) 
-   - [Rsync error](#)
-   - [Error mysql](#)
-   - [SSH error](#) 
+- [Rsync error](#)
+- [Error mysql](#)
+- [SSH error](#) 
 
 
 ## Introduction
@@ -145,8 +161,8 @@ files.exclude.txt - the file which defines excluded directories.
 exclude.mysqldb.txt - the script backs up all of a databases. However, in this file you can exclude some of them.
 Zbx_export_templates.xml - Zabbix template file.
 
-
-## 2. Configuration by using the script.  
+---
+## 2. Configuration by using the script  
 With the following command you should configure your *ebackup.sh* script. You can also configure it by editing the *ebackup.conf* file:
 
 ```bash
