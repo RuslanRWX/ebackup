@@ -6,9 +6,12 @@
 
 Action:
 1. [Installation](#installation)
-    - [Before installation](#before-installation)
-    - [Clone project from Github repository](#)
-    - [Go to directory and list files](#)
+
+    1.1 [Before installation](#before-installation)
+    
+    1.2 [Clone project from Github repository](#)
+    
+    1.2 [Go to directory and list files](#)
 2. [Configuration by using the script](#)
 3. [Configuration by redact a configuration file](#)
    - [ebackup.conf](#)
