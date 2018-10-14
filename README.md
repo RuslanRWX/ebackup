@@ -40,11 +40,11 @@ Action:
    - [SSH error](#) 
 
 
-##Introduction
+## Introduction
 
 The *ebackup.sh* is an easy backup script written in Shell (sh) for Linux/Unix operating systems. The ebackup is easy for configuration and installing. The source of script is broken into functions, therefore, you can add your own function without a big effort. 
 
-##Description
+## Description
 The *ebackup.sh* is created based on Rsync and should be installed on machines that you want to back up. The *ebackup.sh* is connected to a remote backup server through SSH, therefore, you need access to some user and that user has to have command-line interpreter. For working properly, command-line interpreter have to be SH or Bash. For example, default shell on [FreeBSD](#https://www.freebsd.org/) could be csh, in that case the *ebackup.sh* script wouldn’t work as expected. 
 
 
