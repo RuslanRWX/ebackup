@@ -26,11 +26,10 @@ createmycnf() {
 	if [ -f ~/.my.cnf ];
 	 then {
 	 mv ~/.my.cnf ~/.my.cnf.back;
-	 echo "We have saved your old .my.cnf file, it can be access to ~/.my.cnf.back"
+	 echo "We have saved your old .my.cnf file, you can find it there: ~/.my.cnf.back"
 	 }
 	 fi
 	sed "s/User/$User/;s/Pass/$Pass/;s/Port/$Port/;s/Host/$Host/" .my.cnf  > ~/.my.cnf
-
        	cd $Path
 }
 
@@ -208,7 +207,7 @@ MySQL_else_def () {
 }
 
 Mongo_def () {
-	read -p "	|->  Do you want to backup of Mongodb:[NO] " MongoParm
+	read -p "	|->  Do you want to back up MongoDB:[NO] " MongoParm
 	 : ${MongoParm:="NO"}
 	 Mdbold=$(grep -E  "MongoDB=" $Path/ebackup.conf)
 }

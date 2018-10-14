@@ -42,7 +42,7 @@ Action:
 The *ebackup.sh* is an easy backup script written in Shell (sh) for Linux/Unix operating systems. The ebackup is easy for configuration and installing. The source of script is broken into functions, therefore, you can add your own function without a big effort. 
 
 ##Description
-The *ebackup.sh* is created based on Rsync and should be installed on machines that you want to back up. The *ebackup.sh* is connected to a remote backup server through SSH, therefore, you need access to some user and that user has to have command-line interpreter. For working properly, command-line interpreter have to be SH or Bash. For example, default shell on FreeBSD could be csh, in that case the *ebackup.sh* script wouldn’t work as expected. 
+The *ebackup.sh* is created based on Rsync and should be installed on machines that you want to back up. The *ebackup.sh* is connected to a remote backup server through SSH, therefore, you need access to some user and that user has to have command-line interpreter. For working properly, command-line interpreter have to be SH or Bash. For example, default shell on [FreeBSD](#https://www.freebsd.org/) could be csh, in that case the *ebackup.sh* script wouldn’t work as expected. 
 
 
 >Note: I highly recommend use sh or bash on a remote backup server.
@@ -52,7 +52,7 @@ Abilities:
  - Full backup of file system
  - Incremental backup of file system
  - Check of backup status
- - Dumping of MySQL and MongoDB
+ - Dumping of [MySQL](#https://www.mysql.com/) and [MongoDB](#https://www.mongodb.com/)
  - Execution of commands on a remote backup server
  - Logging output and rotating log files.
 
@@ -85,22 +85,22 @@ exclude.mysqldb.txt - the script backups all of a databases but you can exclude 
 
 
 ---
-## Installation
+## 1. Installation
 
 
 
-#### Before installation 
+#### 1.1 Before installation 
 
 >Note: You have to have a remote backup server to store your archives.
 
 
-You should install Git if you haven’t yet.
-For  Debian-based distribution, such as Debian, Ubuntu, try apt:
+You should install [Git](#https://git-scm.com/) if you haven’t yet.
+For  [Debian-based](#https://www.debian.org/) distribution, such as Debian, Ubuntu, try apt:
 ```bash
 apt update && apt install git
 ```
 
-For RHEL-based distribution, such as CentOS, Red Hat, Fedora, try yum:
+For [RHEL-based](#https://www.redhat.com/) distribution, such as CentOS, Red Hat, Fedora, try yum:
 ```bash
 yum install git 
 ```
@@ -110,7 +110,7 @@ Limit count of backup copies depends on a storage capacity on the remote backup 
 
 
 Now start installation and configuration 
-#### Clone project from GitHub repository: 
+#### 1.2 Clone project from GitHub repository: 
 
 >Note: Create a directory where you want to store script, for example in your home directory:
 ```bash cd & mkdir bin & cd bin```  
@@ -118,6 +118,76 @@ Now start installation and configuration
 Git clone:
 ```bash
 git clone https://github.com/ruslansvs2/ebackup.git 
+```
+
+#### 1.3 Go to directory and list files
+```bash
+cd ebackup && ls -la
+-rw-r--r--  1 ruslan ruslan   768 Aug 25 23:21 ebackup.conf
+-rwxrwxr-x  1 ruslan ruslan 13380 Aug 25 23:27 ebackup.sh
+-rw-r--r--  1 ruslan ruslan    38 Nov 26  2014 exclude.mysqldb.txt
+-rw-r--r--  1 ruslan ruslan    20 Nov 26  2014 files.exclude.txt
+-rw-r-----  1 ruslan ruslan    18 Nov 26  2014 files.txt
+-rw-rw-r--  1 ruslan ruslan  1156 Nov 24  2014 .my.cnf
+-rw-rw-r--  1 ruslan ruslan  1686 Nov 20  2018 README.md
+-rw-rw-r--  1 ruslan ruslan  5323 Nov 19  2017 zbx_export_templates.xml
+```
+
+The directory contains eight files:
+
+ebackup.sh - backup script.
+ebackup.conf - main configuration file.
+files.txt - the file which defines directories that you want to back up.
+files.exclude.txt - the file which defines excluded directories.
+exclude.mysqldb.txt - the script backs up all of a databases. However, in this file you can exclude some of them.
+Zbx_export_templates.xml - Zabbix template file.
+
+
+## 2. Configuration by using the script.  
+With the following command you should configure your *ebackup.sh* script. You can also configure it by editing the *ebackup.conf* file:
+
+```bash
+#./ebackup.sh  -configure
+
+
+Start configuration. You can see your backup configuration file after that
+	|->  IP or domain of backup server: 127.0.0.1
+	|->  User for a remote backup server: test
+	|->  How many days you want to keep the backup files ?:[15] 3
+	|->  Do you want to configure :[YES] yes
+		|->  This output of df -h command can help you choose a storage for databases backup:
+Filesystem      Size  Used Avail Use% Mounted on
+udev            3,9G     0  3,9G   0% /dev
+tmpfs           790M   19M  772M   3% /run
+/dev/sda2        19G   15G  3,3G  82% /
+tmpfs           3,9G   31M  3,9G   1% /dev/shm
+tmpfs           5,0M  4,0K  5,0M   1% /run/lock
+tmpfs           3,9G     0  3,9G   0% /sys/fs/cgroup
+/dev/sda3       199G  139G   51G  74% /home
+/dev/sda1       188M  3,4M  184M   2% /boot/efi
+cgmfs           100K     0  100K   0% /run/cgmanager/fs
+tmpfs           790M   52K  790M   1% /run/user/1000
+	|->  Backup path for MySQL dump :[/var/db-backup/] 
+	|->  Do you want to start mysqlcheck before dumping:[NO] no
+	|->  Would you like to configure access to MySQL? (~/.my.cnf):[YES] yes
+create my.cnf
+User for mysqldump [root]: root
+Password for user: test
+Port default [3306]: 
+Host default [localhost]: 
+We have saved your old .my.cnf file, you can find it there: ~/.my.cnf.back
+	|->  Do you want to back up MongoDB:[NO] !!
+	|->  Do you want to create ssh-key?:[YES] 
+ssh-key is YES
+Generating public/private rsa key pair.
+/home/ruslan/.ssh/id_rsa already exists.
+Overwrite (y/n)? n
+Enter password for test@127.0.0.1
+test@127.0.0.1's password: 
+        |->  Do you want to create backup cron task?:[YES] y
+Cron task job is y
+Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: 
+Success !!!
 ```
 
 
