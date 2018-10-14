@@ -1,0 +1,33 @@
+# Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
+#
+###################################### Version 2.2.4 #######################################################
+# Directory on backup server
+dir=`hostname`
+# Backup server 
+bksrv=127.0.0.1
+# User on backup server
+bkusr=test
+# SSH port
+Port=22
+# Path for mysqldump
+dbbackuppath=/var/db-backup/
+# Number of days of keeping backups  
+Days=3
+# Sufix for backup file
+SUFFIX=`date +"%Y-%m-%d-%H%M%S"`
+# File pid 
+Pid=/var/run/backup.pid
+# Dump mysql YES|NO
+MySQL=y
+# Mysqlcheck and repair (only for MyISAM)
+MySQLCheck=n
+# Dump MongoDB
+MongoDB=NO
+# Log file
+Log=/var/log/backup.log
+# Mysqldump Keys 
+MysqldumpKey='--opt  --routines'
+# Rotation of log files YES|NO 
+rotate=YES
+# Number of logs to keep
+rotateQu=7
