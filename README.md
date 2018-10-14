@@ -1,42 +1,40 @@
 
-### backup.sh 
-backup.sh - is a simple backup script for Linux or FreeBDS OS systems using shell (sh). 
+### ebackup.sh 
 
-Ability: 
-   - Full backup file system 
-   - Incremental backup file system 
-   - Check status and status  for zabbix monitoring 
-   - Dumping mysql and mongodb 
-   - Send command to the remote backup server for example you can inspect your backup files    
-   - Easy to configure 
-   - keeping log and rotate it
-   - More features you can see by following command ./backup.sh -help     
+- [Introduction](#introduction)
+- [Description](#description)
 
+Action:
+1. [Installation](#installation)
 
-```
-./backup.sh -help
-Start with:
-	-backup       - Incremental backup
-	-backup-full  - Full backup
-	-status       - Show status
-	-check        - Check backup, returns 0 - everything's OK, 1 - something's wrong  (for zabbix)
-	-check-l      - Check last backup
-       	-check-rsync  - Check rsync errors, return 0 - everthing Ok, 1 - something wrong (for zabbix)
-	-check-rsync-l - Check rsync errors, full errors
-	-clean        - Clean backup files
-	-backup-mysql - Start mysqldump and send to a backup server
-	-mysql-check  - Start mysqlcheck
-	-mysql-dump   - Start only mysqldump ( without sending a backup file to a backup server)
-	-command      - Execute remote command on a backup server, example:./backup/backup.sh -command "ls -al"
-	-com          - Same as -command, example:./backup.sh -com "cd ~/niroo; ls -al"
-	-ssh-keygen   - Create authentication key
-	-configure    - Configure or reconfigure your config file 
-	-rotate       - Rotate log files
+1.1 [Before installation](#bifore installation)
 
-backup.conf - main configuration file
-files.txt - the file with directories to backup
-files.exclude.txt - the file with exclude directories
-exclude.mysqldb.txt - the script backup all of databases but you can exclude some of it
-```
+1.2 [Clone project from Github repository](#)
 
-
+1.3 [Go to directory and list files](#)
+2. Configuration by using the script
+3. Configuration by redact a configuration file
+3.1 ebackup.conf
+3.2 files.txt 
+3.3 files.exclude.txt 
+3.4. exclude.mysqldb.txt 
+           4. Testing script
+4.1 Test to proper connect
+           5. Featches 
+5.1 Start backup  ( incremental in case exist backup )
+5.2 Start full backup
+5.3 Check status
+5.4 Check status of archives
+5.5 Check rsync errors
+5.6 Clean
+5.7 Backup and check MySQL
+5.7.1 Backup
+5.7.2 Backup without sent data to a backup server 
+5.7.3 MySQL Check
+                     5.8 Execute command on the remote backup server 
+5.10 Configuration option 
+5.11. Rotation 
+6. Troubleshooting 
+6.1 Rsync error
+6.2 Error mysql
+6.3 SSH error 

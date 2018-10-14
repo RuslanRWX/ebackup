@@ -1,23 +1,21 @@
 #!/bin/sh
 # Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
 #
-###################################### Version 2.2.3 #######################################################
+###################################### Version 2.2.4 #######################################################
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/local/ssl/bin
 checkr=$(whereis rsync | grep bin | awk -F":" '{ print $2 }')
 if [ "$checkr" = "" ]; then { echo "ERROR: You should install rsync!"; exit 1;  } fi
 Path=$( cd "$( dirname "$0" )" && pwd )
-. $Path/backup.conf
+. $Path/ebackup.conf
 
 trap "rm $Pid; exit" 1 2 15
-
+#logger -i $Pid
 os=$(uname)
 if [ "$os" = "FreeBSD" ]; then { download="fetch"; }; fi
 if [ "$os" = "Linux" ]; then { download="wget"; } fi
 
 createmycnf() { 
 	echo "create my.cnf"
-        cd /tmp
-	$download https://raw.githubusercontent.com/ruslansvs2/backup/master/.my.cnf
 	read -p "User for mysqldump [root]: " User
 	 : ${User:="root"}
         read -p "Password for user: " Pass
@@ -25,7 +23,14 @@ createmycnf() {
 	 : ${Port:="3306"}
 	read -p "Host default [localhost]: " Host
 	 : ${Host:="localhost"}
-	sed  "s/User/$User/;s/Pass/$Pass/;s/Port/$Port/;s/Host/$Host/" .my.cnf  > ~/.my.cnf
+	if [ -f ~/.my.cnf ];
+	 then {
+	 mv ~/.my.cnf ~/.my.cnf.back;
+	 echo "We have saved your old .my.cnf file, it can be access to ~/.my.cnf.back"
+	 }
+	 fi
+	sed "s/User/$User/;s/Pass/$Pass/;s/Port/$Port/;s/Host/$Host/" .my.cnf  > ~/.my.cnf
+
        	cd $Path
 }
 
@@ -116,7 +121,7 @@ ssh -o ConnectTimeout=5 -p${Port}  $bkusr@$bksrv " if [ -d ~/${dir}/${SUFFIXDump
 
 CheckBackupAll () {
 SUFFIXDump=$(cat ${Path}/lastback.txt 2>> /dev/null || echo "null" )
-ssh -o ConnectTimeout=10 -p${Port}  $bkusr@$bksrv "if [ -d ~/${dir}/${SUFFIXDump} ]; then { echo -e 'Ok\nlast backup: '${SUFFIXDump}; } else { echo -e 'Error\nNeed check!\nUse: ./backup.sh -com \"cd ~/$dir; ls -al\"'; } fi" 2>> /dev/null || echo "Error: connect to host "$bksrv 
+ssh -o ConnectTimeout=10 -p${Port}  $bkusr@$bksrv "if [ -d ~/${dir}/${SUFFIXDump} ]; then { echo -e 'Ok\nlast backup: '${SUFFIXDump}; } else { echo -e 'Error\nNeed check!\nUse: ./ebackup.sh -com \"cd ~/$dir; ls -al\"'; } fi" 2>> /dev/null || echo "Error: connect to host "$bksrv 
 }
 
 CheckRsync () {
@@ -139,8 +144,8 @@ Clean () {
     }
 
 SSHkey () {
-	DefIP=$(grep -E 'bksrv=' $Path/backup.conf | awk -F'=' '{ print $2 }')
-	DefU=$(grep -E 'bkusr=' $Path/backup.conf | awk -F'=' '{ print $2 }')
+	DefIP=$(grep -E 'bksrv=' $Path/ebackup.conf | awk -F'=' '{ print $2 }')
+	DefU=$(grep -E 'bkusr=' $Path/ebackup.conf | awk -F'=' '{ print $2 }')
 	read -p "	|->  IP backup server  [ $DefIP ] :" IPParm
 	: ${IPParm:="$DefIP"}
 	read -p "	|->  User for remote server [ $DefU ] :" UserParm
@@ -153,71 +158,116 @@ cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat 
 Configure () {
 cd $Path
 
-IPfunk () {
-	echo  "Start of configuration. You can see your backup configuration file after that"
-	read -p "	|->  IP of backup server: " IPParm
-	IPold=$(grep -E "bksrv=" $Path/backup.conf)
+IP_def () {
+	echo  "Start configuration. You can see your backup configuration file after that"
+	read -p "	|->  IP or domain of backup server: " IPParm
+	IPold=$(grep -E "bksrv=" $Path/ebackup.conf)
 #	if echo $IPParm | grep -v -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"; then  { echo Bad IP adress; exit 1; } fi
-}	
+}
+
+User_def () {
+	read -p "	|->  User for a remote backup server: " UserParm
+	UPold=$(grep -E "bkusr=" $Path/ebackup.conf)
+}
+
+Days_def () {
+  	 read -p "	|->  How many days you want to keep the backup files ?:[15] " DayParm
+	 : ${DayParm:="15"}
+	if echo $DayParm | grep -v -E "[0-9]"; then { echo the days parameter must be an integer; exit 1; } fi
+	Dayold=$(grep -E  "Days=" $Path/ebackup.conf)
+}
+
+MySQL_def () {
+	read -p "	|->  Do you want to configure a MySQL backup:[YES] " MysqlParm
+	 : ${MysqlParm:="YES"}
+}
+
+MySQL_then_def () {
+ 	         echo  "		|->  This output of df -h command can help you choose a storage for backed up databases :"
+	         df -h
+	         read -p "	|->  Backup path for MySQL dump :[/var/db-backup/] " PathParm
+	         : ${PathParm:="/var/db-backup/"}
+	         if [ ! -d $PathParm  ]; then { mkdir $PathParm;  } fi
+	         Pold=$(grep -E 'dbbackuppath=' $Path/ebackup.conf )
+	         MPold=$(grep -E "MySQL=" $Path/ebackup.conf)
+	         read -p "	|->  Do you want to start mysqlcheck before dumping:[NO] " MysqlCParm
+	         : ${MysqlCParm:="NO"}
+	         MCPold=$(grep -E "MySQLCheck=" $Path/ebackup.conf)
+	         read -p "	|->  Would you like to configure access to MySQL? (~/.my.cnf):[YES] " MysqlAccess
+	         : ${MysqlAccess:="YES"}
+    	     if echo $MysqlAccess |  grep -i -E  "^y$|^yes$|^ye$" >> /dev/null; then { createmycnf; } fi
+}
+
+MySQL_else_def () {
+	        PathParm="/var/db-backup/"
+                Pold=$(grep -E 'dbbackuppath=' $Path/ebackup.conf )
+	        MysqlParm="NO"
+	        MPold=$(grep -E "MySQL=" $Path/ebackup.conf)
+	        MysqlCParm="NO"
+	        MCPold=$(grep -E "MySQLCheck=" $Path/ebackup.conf)
+}
+
+Mongo_def () {
+	read -p "	|->  Do you want to backup of Mongodb:[NO] " MongoParm
+	 : ${MongoParm:="NO"}
+	 Mdbold=$(grep -E  "MongoDB=" $Path/ebackup.conf)
+}
+
 SSHkeygen () {
 ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
 echo "Enter password for "$UserParm"@"$IPParm
 cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
-
 }
 
-CronTask () {
-read -p "Please, enter timestamp in cron format [1 1 * * *]: " CronTaskDate
- : ${CronTaskDate:="1 1 * * *"}
-echo " $CronTaskDate root $Path/backup.sh -backup >> /dev/null 2>&1 " >> /etc/crontab
-}
-
-        IPfunk  	
-	read -p "	|->  User for remote server: " UserParm
-	UPold=$(grep -E "bkusr=" $Path/backup.conf)
-        echo  "		|->  Please show your df:"
-	df -h
-	read -p "	|->  Backup path for MySQL dump :[/var/db-backup/] " PathParm
-	 : ${PathParm:="/var/db-backup/"}
-	 if [ ! -d $PathParm  ]; then { mkdir $PathParm;  } fi
-	 Pold=$(grep -E 'dbbackuppath=' $Path/backup.conf )
-        read -p "	|->  Number of days of keeping backup files ?:[15] " DayParm
-	 : ${DayParm:="15"}
-	if echo $DayParm | grep -v -E "[0-9]"; then { echo Days cannot be numbers; exit 1; } fi
-	Dayold=$(grep -E  "Days=" $Path/backup.conf)
-	read -p "	|->  Need backup of MySQL:[YES] " MysqlParm
-	 : ${MysqlParm:="YES"}
-	 MPold=$(grep -E "MySQL=" $Path/backup.conf)
-	read -p "	|->  Need check|repair of MySQL:[NO] " MysqlCParm
-	 : ${MysqlCParm:="NO"}
-	 MCPold=$(grep -E "MySQLCheck=" $Path/backup.conf)
-	 read -p "	|->  If you have mysql-server, would you like to configure access to MySQL? (~/.my.cnf):[YES] " MysqlAccess
-	 : ${MysqlAccess:="YES"}
-    	if [ ! -f ~/.my.cnf ] && [ $MysqlAccess = "YES" ]; then { createmycnf;   } fi 
-	read -p "	|->  Need backup of Mongodb:[NO] " MongoParm
-	 : ${MongoParm:="NO"}
-	 Mdbold=$(grep -E  "MongoDB=" $Path/backup.conf)
-         echo $Pold | sed "s/\//\\\\\//g" > /tmp/Pold.txt
-         echo $PathParm | sed "s/\//\\\\\//g" > /tmp/PathParm.txt
-	 Pold=$(cat /tmp/Pold.txt)
-	 PathParm=$(cat  /tmp/PathParm.txt)
-	 rm /tmp/Pold.txt
-	 rm /tmp/PathParm.txt
-#        echo $Pold
-#        echo $PathParm
-if [ "$os" = "FreeBSD" ]; then { sedkey='-i .back'; }; fi
-if [ "$os" = "Linux" ]; then { sedkey='-i.back '; } fi
-
-sed  $sedkey "s/$IPold/bksrv=$IPParm/; s/$UPold/bkusr=$UserParm/; s/$Pold/dbbackuppath=$PathParm/; s/$Dayold/Days=$DayParm/; s/$MPold/MySQL=$MysqlParm/; s/$MCPold/MySQLCheck=$MysqlCParm/; s/$Mdbold/MongoDB=$MongoParm/;" $Path/backup.conf
-
+Sshkey_def () {
 	read -p "	|->  Do you want to create ssh-key?:[YES] " sshkey
 	 : ${sshkey:="YES"}
-if   echo ssh-key is $sshkey | grep -E  "[Yy][Ee][Ss]" ; then { SSHkeygen; } fi 
-	read -p "        |->  Do you want to create backup cron task?:[NO] " CronTaskParm
-         : ${CronTaskParm:="NO"}
-if   echo Cron task job is $CronTaskParm | grep -E "[Yy][Ee][Ss]" ; then CronTask; fi
+	 echo ssh-key is $sshkey
+     if echo $sshkey | grep -i -E  "^y$|^yes$|^ye$"  >> /dev/null; then { SSHkeygen; } fi
+}
 
-echo "Success !!!"
+Cron_def () {
+	read -p "        |->  Do you want to create backup cron task?:[YES] " CronTaskParm
+         : ${CronTaskParm:="YES"}
+        echo Cron task job is $CronTaskParm
+        if echo $CronTaskParm | grep -i -E "^y$|^yes$|^ye$" >> /dev/null; then CronTask; fi
+}
+
+
+CronTask () {
+	read -p "Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: " CronTaskDate
+        : ${CronTaskDate:="1 1 * * *"}
+        echo " $CronTaskDate root $Path/ebackup.sh -backup >> /dev/null 2>&1 " >> /etc/crontab
+} 
+    # determination of parameters
+    IP_def
+    User_def
+    Days_def
+    MySQL_def
+    	
+    if echo  $MysqlParm | grep -i -E "^y$|^yes$|^ye$" >> /dev/null
+	 then  MySQL_then_def 
+         else  MySQL_else_def 
+    fi 
+    Mongo_def
+
+    echo $Pold | sed "s/\//\\\\\//g" > /tmp/Pold.txt
+    echo $PathParm | sed "s/\//\\\\\//g" > /tmp/PathParm.txt
+    Pold=$(cat /tmp/Pold.txt)
+    PathParm=$(cat  /tmp/PathParm.txt)
+    rm /tmp/Pold.txt
+    rm /tmp/PathParm.txt
+
+
+    if [ "$os" = "FreeBSD" ]; then { sedkey='-i .back'; }; fi
+    if [ "$os" = "Linux" ]; then { sedkey='-i.back '; } fi
+
+
+    sed  $sedkey "s/$IPold/bksrv=$IPParm/; s/$UPold/bkusr=$UserParm/; s/$Pold/dbbackuppath=$PathParm/; s/$Dayold/Days=$DayParm/; s/$MPold/MySQL=$MysqlParm/; s/$MCPold/MySQLCheck=$MysqlCParm/; s/$Mdbold/MongoDB=$MongoParm/;" $Path/ebackup.conf
+
+    Sshkey_def
+    Cron_def
+    echo "Success !!!"
 
 }
 
@@ -283,17 +333,17 @@ echo -e "Start with:
 	-clean        - Clean backup files
 	-backup-mysql - Start mysqldump and send to a backup server
 	-mysql-check  - Start mysqlcheck
-	-mysql-dump   - Start only mysqldump ( without sending a backup file to a backup server)
-	-command      - Execute remote command on a backup server, example:$Path/backup.sh -command \"ls -al\"
-	-com          - Same as -command, example:$Path/backup.sh -com \"cd ~/$dir; ls -al\"
+	-mysql-dump   - Start only mysqldump ( without sending a backup files to a backup server)
+	-command      - Execute remote command on a backup server, example:$Path/ebackup.sh -command \"ls -al\"
+	-com          - Same as -command, example:$Path/ebackup.sh -com \"cd ~/$dir; ls -al\"
 	-ssh-keygen   - Create authentication key  
 	-configure    - Configure or reconfigure your config file 
 	-rotate       - Rotate log files
 
-backup.conf - main configuration file
-files.txt - the file with directories to backup
-files.exclude.txt - the file with exclude directories
-exclude.mysqldb.txt - the script backup all of databases but you can exclude some of it
+ebackup.conf - configuration file
+files.txt - the file defines directories that you want to bacup
+files.exclude.txt - the file defines exclude directories
+exclude.mysqldb.txt - the script backups all of a databases but you can exclude some of it
 	"
 }
 # ======================================== Action ======================================
@@ -303,7 +353,7 @@ case $1 in
 PidFun
 if   echo MySQLCheck is $MySQLCheck | grep -E -w "[Yy][Ee][Ss]" ; then { MySQLCheck 2>&1 | tee -a  $Log; } fi 
 if   echo MySQL is $MySQL | grep -E -w "[Yy][Ee][Ss]" ; then {  MySQLDump 2>&1 | tee -a $Log; } fi 
-if   echo MongoDB is $MongoDB | grep -E  "[Yy][Ee][Ss]"; then { MongoDump 2>&1 | tee -a $Log ; }  fi
+if   echo MongoDB is $MongoDB | grep -E -w "[Yy][Ee][Ss]"; then { MongoDump 2>&1 | tee -a $Log ; }  fi
     StoreBackupInc 2>&1 | tee -a  $Log 
 if   echo MySQL is $MySQL Mongodb is $MongoDB  | grep -E -w "[Yy][Ee][Ss]" ; then { StoreBackupMysql 2>&1 | tee -a $Log; } fi 
     Arsync 2>&1 | tee -a $Log
