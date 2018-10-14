@@ -246,6 +246,7 @@ You will find it in /etc/crontab
 You can now check all the settings in the main configuration file: 
 
 ```bash
+
 #cat ebackup.conf 
 # Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
 #
