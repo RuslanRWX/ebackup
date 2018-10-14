@@ -166,7 +166,6 @@ Zbx_export_templates.xml - Zabbix template file.
 With the following command you should configure your *ebackup.sh* script. You can also configure it by editing the *ebackup.conf* file:
 
 ```
-
 #./ebackup.sh  -configure
 Start configuration. You can see your backup configuration file after that
 	|->  IP or domain of backup server: 127.0.0.1
