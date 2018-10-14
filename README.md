@@ -213,34 +213,38 @@ Now let’s have a closer look at the configuration process.
 You can specify IP or hostname of backup server. In my example, I added localhost as a remote backup server.
  
 ```|->  User for remote server: test``` -  username witch exists on a remote backup server that you have access to. 
+
 ```|-> How many days you want to keep the backup files ?:[15] 3``` - In this step, you should define how many copies you want to keep on a backup server.
 
 
-|->  Do you want to configure a MySQL backup:[YES] yes  -- if you have a MySQL server, you can back up your databases using this script. The script uses mysqldump client utility, its parameters you can configure in configuration file. The answer should be “yes” or “YES”. 
-This output of df -h command can help you choose a storage for databases backup:  -- This output can help you choose a directory for backup  databases.
-Backup path for MySQL dump :[/var/db-backup/]     -- choose a directory for MySQL dump files 
+```|->  Do you want to configure a MySQL backup:[YES] yes```  - if you have a [MySQL](#https://www.mysql.com/) server, you can back up your databases using this script. The script uses *[mysqldump](#https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)* client utility, its parameters you can configure in configuration file. The answer should be “yes” or “YES”. 
 
-Do you want to start mysqlcheck before dumping:[NO] n    --  This can be useful for MyISAM data storage engine. If you don’t use it then leave the parameter as no.
+```This output of df -h command can help you choose a storage for databases backup:``` - This output can help you choose a directory for backup databases.
 
-Would you like to configure access to MySQL? (~/.my.cnf):[YES] y  --  You can configure access to MySQL server on the fly. You have to be prepared input username and password of a MySQL user. If you had a local configuration file ~/.my.cnf for mysql-client it will be saved as ~/.my.cnf.back.  
+```Backup path for MySQL dump :[/var/db-backup/]``` - choose a directory for MySQL dump files 
 
-Do you want to back up Mongodb:[NO]  -- If you have MongoDB, you can back up databases by setting this parameter to YES. The script will be using a mongodump tool to create a backup.  
+```Do you want to start mysqlcheck before dumping:[NO] no ``` - This can be useful for MyISAM data storage engine. If you don’t use it then leave the parameter as NO.
 
- Do you want to create ssh-key?:[YES]  -- This step is a little bit specific, you can create ssh-key for having access to a remote backup server. You need to be prepared to input user’s password of the remote backup server. If you already have ssh-key, the script will ask you to overwrite it: 
+```Would you like to configure access to MySQL? (~/.my.cnf):[YES] yes```  --  You can configure access to MySQL server on the fly. You have to be prepared input username and password of a MySQL user. If you had a local configuration file ~/.my.cnf for mysql-client it will be saved as ~/.my.cnf.back.  
 
-/home/ruslan/.ssh/id_rsa already exists.
+```Do you want to back up MongoDB:[NO]  ``` - If you have *[MongoDB](#https://www.mongodb.com/)*, you can back up databases by setting this parameter to YES. The script will be using a *[mongodump](#https://docs.mongodb.com/manual/reference/program/mongodump/)* tool to create a backup.  
+
+```Do you want to create ssh-key?:[YES]``` - This step is a little bit specific, you can create *ssh-key* for having access to a remote backup server. You need to be prepared to input user’s password of the remote backup server. If you already have *ssh-key*, the script will ask you to overwrite it: 
+
+```/home/ruslan/.ssh/id_rsa already exists.
 Overwrite (y/n)? n
-
+```
 I didn’t want to lose my key. After that, the script will add your public key to the remote backup server. 
 
- Do you want to create backup cron task?:[YES]  y -- In this last question, the script can add the backup task to your cron.   
-
-Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]:   
+```Do you want to create backup cron task?:[YES]  y ``` - In this last question, the script can add the backup task to your cron.   
+```
+Add job to the crontab file (/etc/crontab), enter a timestamp in [cron format](#https://en.wikipedia.org/wiki/Cron), default [1 1 * * *]:   
 
 You will find it in /etc/crontab  
 1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1 
-
+```
 You can now check all the settings in the main configuration file: 
+
 ```bash
 #cat ebackup.conf 
 # Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
