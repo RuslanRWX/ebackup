@@ -313,7 +313,7 @@ vim ebackup.conf
 |dir               | Defines a directory name that will be stored in a backup server. By default option, it will be an output of the *hostname* command. Default value:\`hostnmae\`.            
 |bksrv             | Defines the real hostname or IP address of a remote backup server. In my case, it is a localhost, but I highly recommend using a remote storage.
 |bkusr             | Specifies a user to access remote server.  
-|Port              | Sets the ssh port to connect to remote backup server. Default value: "22".
+|Port              | Sets the ssh port to connect to remote backup server. Default value: 22.
 |dbbackuppath      | Path to a directory storage for database backup files. Default value:"/var/db-backup/".
 |Days              | Amount of days that data will be saved on a backup server.  
 |SUFFIX            | Add suffix for a directory name on a backup server where the data will be sore. Default value:\`date +"%Y-%m-%d-%H%M%S"\`. 
@@ -324,6 +324,6 @@ vim ebackup.conf
 |MongoDB           | Sets backup of MongoDB. If you have MongoDB service, you can set “YES” or "yes" for this variable, but it will work without authentication. You can modify *MongoDump* function in the ebackup.sh file under your specification. 
 |Log               | The script logs to its own log file. This variable defines path and file name for logs. Default value:"/var/log/ebackup.log".
 |rotate            | Defines log rotation. You don’t need configure *[logrotate](#https://linux.die.net/man/8/logrotate)* - log rotation can be done by the script. This function starts first, thus every file contains one iteration of a backup task. Default value:"YES". 
-|rotateQu          | Specifies maximum amount of the log files before deleting the excess ones. "Default value: 7".
+|rotateQu          | Specifies maximum amount of the log files before deleting the excess ones. Default value: 7.
 
 
