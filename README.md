@@ -321,7 +321,7 @@ vim ebackup.conf
 |MySQL=yes         | Sets back up MySQL. The script can back up MySQL databases by using *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* tool.
 |MySQLCheck=NO     | Defines whether to start or not to start a table maintenance utility *[mysqlcheck](#https://dev.mysql.com/doc/refman/en/mysqlcheck.html)*.
 |MysqldumpKey='--opt  --routines' | You can specify *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* options.
-|MongoDB=NO        | Sets backup of MongoDB. If you have MongoDB service, you can set “yes|YES” for this variable, but it will work without authentication. You can modify *MongoDump* function in the ebackup.sh file under your specification. 
+|MongoDB=NO        | Sets backup of MongoDB. If you have MongoDB service, you can set “YES” or "yes" for this variable, but it will work without authentication. You can modify *MongoDump* function in the ebackup.sh file under your specification. 
 |Log=/var/log/ebackup.log  | The script logs to its own log file. This variable defines path and file name for logs.
 |rotate=YES        | Defines log rotation. You don’t need configure *[logrotate](#https://linux.die.net/man/8/logrotate)* - log rotation can be done by the script. This function starts first, thus every file contains one iteration of a backup task.  
 |rotateQu=7        | Specifies maximum amount of the log files before deleting the excess ones.
