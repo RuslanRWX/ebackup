@@ -13,7 +13,7 @@ Action:
     
     1.2 [Go to directory and list files](#)
 2. [Configuration by using the script](#)
-3. [Configuration by redact a configuration file](#)
+3. [Edit the main configuration file](#)
    
    3.1 [ebackup.conf](#)
    
@@ -221,9 +221,8 @@ You will find it in /etc/crontab
 ```
 tail -1 /etc/crontab
 1 1 * * * root /home/user/ebackup/ebackup.sh -backup >> /dev/null 2>&1
-``` 
-
-
+```
+ 
 Now let’s have a closer look at the configuration process.  
 
 ```|-> IP or domain of backup server: 127.0.0.1```  - In this step, you have to add your remote backup server  
@@ -255,7 +254,7 @@ I didn’t want to lose my key. After that, the script will add your public key 
 
 ```Do you want to create backup cron task?:[YES]  y ``` - In this last question, the script can add the backup task to your cron.   
 
-```Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: ```-   
+```Add job to the crontab file (/etc/crontab), enter a timestamp in cron format, default [1 1 * * *]: ```- set your proper time to back up.  
 
 
 You can now check all the settings in the main configuration file: 
@@ -297,3 +296,45 @@ rotate=YES
 # Number of logs to keep
 rotateQu=7
 ```
+---
+##3. Edit the main configuration file 
+
+####3.1 ebackup.conf 
+Let’s have a look at the *ebackup.conf* file and edit it.
+>Note: In section 2 we showed how to make changes in this file in interactive mode by using -configure flag (./ebackup.sh -configure). You can use this way if it is easier for you. 
+
+Use vim or other command line editor to make changes.
+```
+vim ebackup.conf 
+```
+
+dir=\`hostname\` - defines a directory name that will be stored in a backup server. By default option, it will be an output of the *hostname* command. 
+
+bksrv=127.0.0.1 - defines the real hostname or IP address of a remote backup server. In my case, it is a localhost, but I highly recommend using a remote storage.
+ 
+bkusr=test - specifies a user to access remote server.  
+
+Port=22 - sets the ssh port to connect to remote backup server, the default is 22.
+
+dbbackuppath=/var/db-backup/ - path to a directory storage for database backup files.
+ 
+Days=3  -- amount of days that data will be saved on a backup server.  
+
+SUFFIX=`date +"%Y-%m-%d-%H%M%S"` - add suffix for a directory name on a backup server where the data will be sore.
+
+Pid=/var/run/backup.pid - defines a path to the PID file.
+
+MySQL=yes - sets back up MySQL. The script can back up MySQL databases by using *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* tool.
+
+MySQLCheck=NO - defines whether to start or not to start a table maintenance utility *[mysqlcheck](#https://dev.mysql.com/doc/refman/en/mysqlcheck.html)*.
+
+MysqldumpKey='--opt  --routines' -- you can specify *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* options.
+
+MongoDB=NO - sets backup of MongoDB. If you have MongoDB service, you can set “yes|YES” for this variable, but it will work without authentication. You can modify *MongoDump* function in the ebackup.sh file under your specification. 
+
+Log=/var/log/ebackup.log - the script logs to its own log file. This variable defines path and file name for logs. 
+
+rotate=YES - defines log rotation. You don’t need configure *[logrotate](#https://linux.die.net/man/8/logrotate)* - log rotation can be done by the script. This function starts first, thus every file contains one iteration of a backup task.  
+
+rotateQu=7 - specifies maximum amount of the log files before deleting the excess ones.
+
