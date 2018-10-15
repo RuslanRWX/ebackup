@@ -308,21 +308,21 @@ Use vim or other command line editor to make changes.
 vim ebackup.conf 
 ```
 
-| Variable         | Description                                                                                                                                                |                  
+| Variable         | Description                                                                                                                                     |                  
 |----------------- |-----------------------------------------------------------------------------------------------------------------------------------------------  |
-|dir               | Defines a directory name that will be stored in a backup server. By default option, it will be an output of the *hostname* command.             |
-|bksrv             | Defines the real hostname or IP address of a remote backup server. In my case, it is a localhost, but I highly recommend using a remote storage.|
+|dir               | Defines a directory name that will be stored in a backup server. By default option, it will be an output of the *hostname* command. Default value:\`hostnmae\`.            
+|bksrv             | Defines the real hostname or IP address of a remote backup server. In my case, it is a localhost, but I highly recommend using a remote storage.
 |bkusr             | Specifies a user to access remote server.  
-|Port              | Sets the ssh port to connect to remote backup server, the default is 22.
-|dbbackuppath      | Path to a directory storage for database backup files. 
+|Port              | Sets the ssh port to connect to remote backup server. Default value: 22.
+|dbbackuppath      | Path to a directory storage for database backup files. Default value:/var/db-backup/.
 |Days              | Amount of days that data will be saved on a backup server.  
-|SUFFIX            | Add suffix for a directory name on a backup server where the data will be sore.
-|Pid               | Defines a path to the PID file.
+|SUFFIX            | Add suffix for a directory name on a backup server where the data will be sore. Default value:\`date +"%Y-%m-%d-%H%M%S"\` 
+|Pid               | Defines a path to the PID file. Default value:/var/run/ebackup.pid
 |MySQL             | Sets back up MySQL. The script can back up MySQL databases by using *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* tool.
 |MySQLCheck        | Defines whether to start or not to start a table maintenance utility *[mysqlcheck](#https://dev.mysql.com/doc/refman/en/mysqlcheck.html)*.
-|MysqldumpKey      | You can specify *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* options.
+|MysqldumpKey      | You can specify *[mysqldump](#https://dev.mysql.com/doc/refman/en/mysqldump.html)* options. Default value:'--opt  --routines'
 |MongoDB           | Sets backup of MongoDB. If you have MongoDB service, you can set “YES” or "yes" for this variable, but it will work without authentication. You can modify *MongoDump* function in the ebackup.sh file under your specification. 
-|Log               | The script logs to its own log file. This variable defines path and file name for logs.
-|rotate            | Defines log rotation. You don’t need configure *[logrotate](#https://linux.die.net/man/8/logrotate)* - log rotation can be done by the script. This function starts first, thus every file contains one iteration of a backup task.  
-|rotateQu          | Specifies maximum amount of the log files before deleting the excess ones.
+|Log               | The script logs to its own log file. This variable defines path and file name for logs.Default value:/var/log/ebackup.log.
+|rotate            | Defines log rotation. You don’t need configure *[logrotate](#https://linux.die.net/man/8/logrotate)* - log rotation can be done by the script. This function starts first, thus every file contains one iteration of a backup task. Default value:YES 
+|rotateQu          | Specifies maximum amount of the log files before deleting the excess ones. Defauld value: 7
 
