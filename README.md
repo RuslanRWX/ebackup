@@ -326,3 +326,4 @@ vim ebackup.conf
 |rotate            | Defines log rotation. You don’t need configure *[logrotate](#https://linux.die.net/man/8/logrotate)* - log rotation can be done by the script. This function starts first, thus every file contains one iteration of a backup task. Default value:YES 
 |rotateQu          | Specifies maximum amount of the log files before deleting the excess ones. Defauld value: 7
 
+
