@@ -327,3 +327,410 @@ vim ebackup.conf
 |rotateQu          | Specifies maximum amount of the log files before deleting the excess ones. Default value: 7.
 
 
+#### 3.2 files.txt
+*files.txt* defines which files and directories are going to be backed up.
+Example:
+```
+/etc/
+/usr/
+/var/www/
+/home/user/
+```
+    
+#### 3.3 files.exclude.txt 
+In this file you can exclude some directories. 
+Example:
+```
+/use/share/
+/var/www/log/
+```
+
+#### 3.4. Exclude.mysqldb.txt 
+If you set *MySQL* variable to “YES” in the main configuration file (ebackup.conf), script is going to back up all of your databases. You can add name of databases in *exclude.mysqldb.txt* file if you don’t want to back them up. 
+Example:
+```
+information_schema
+performance_schema
+test 
+```
+---
+## 4. Testing script 
+
+#### 4.1 Connection test
+To check your configuration, you can use some simple commands, such as: *./ebackup -com “ls -al”*. 
+The -com flag sends command to a backup server.   
+Look below to see output: 
+
+```
+./ebackup.sh -com "ls -al"
+total 36
+drwxr-xr-x 6 test test 4096 Aug 24 01:19 .
+drwxr-xr-x 8 root root 4096 Aug 24 01:16 ..
+-rw-r--r-- 1 test test  220 Aug 24 01:16 .bash_logout
+-rw-r--r-- 1 test test 4000 Aug 24 01:16 .bashrc
+drwx------ 2 test test 4096 Aug 24 01:19 .cache
+drwxr-xr-x 4 test test 4096 Aug 24 01:16 .config
+drwxr-xr-x 3 test test 4096 Aug 24 01:16 .mozilla
+-rw-r--r-- 1 test test  655 Aug 24 01:16 .profile
+drwxrwxr-x 2 test test 4096 Aug 24 01:19 .ssh
+```
+
+>Note: *ebackup.sh* uses a ssh-client to connect to backup server. You should check connection by the ssh-client if some problem has occurred. 
+
+---
+## 5. Features, Examples
+See the -help option of *./ebackup.sh*:
+```
+./ebackup.sh -help
+
+```
+
+#### 5.1 Start Backup
+The flag *-backup* will start backup process.
+
+```
+# ./ebackup.sh -backup 
+root     14814  0.0  0.0   4504  1628 pts/0    S+   23:57   0:00 /bin/sh ./ebackup.sh -backup
+Start backup
+Rotation is YES
+Start rotating logs
+moving  /var/log/backup.log.6 /var/log/backup.log.7
+moving  /var/log/backup.log.5 /var/log/backup.log.6
+moving  /var/log/backup.log.4 /var/log/backup.log.5
+moving  /var/log/backup.log.3 /var/log/backup.log.4
+moving  /var/log/backup.log.2 /var/log/backup.log.3
+moving  /var/log/backup.log.1 /var/log/backup.log.2
+moving  /var/log/backup.log /var/log/backup.log.1
+Start backup Вт окт 2 23:57:04 CEST 2018
+sending incremental file list
+--link-dest arg does not exist: ../111-Latest
+etc/
+etc/.pwd.lock
+              0 100%    0.00kB/s    0:00:00 (xfr#1, ir-chk=1299/1301)
+etc/adduser.conf
+          3,028 100%    0.00kB/s    0:00:00 (xfr#2, ir-chk=1298/1301)
+```
+
+>Note: It is a default option for backing up your file system.  
+
+
+#### 5.2 Start full backup
+
+```./ebackup.sh -backup-full``` - output should be the same as above 
+
+#### 5.3 Check status
+```
+./ebackup.sh -status
+backup is not running
+```
+
+#### 5.4 Check status of archives
+There are two options: -check and -check-l ( verbose ) 
+-check option returns boolean value 0 or 1
+where:
+0 - backup is okay 
+1 - backup is not okay  
+-check-l gives you more information  
+Output with error:  
+```
+./ebackup.sh -check-l  
+Error
+Need check!
+Use: ./ebackup.sh -com "cd ~/enigma; ls -al"
+```
+
+It means something is wrong. You have to check your backup files, settings, access etc.   
+
+Output without error: 
+```
+./ebackup.sh -check-l  
+Ok
+last backup: 2018-10-03-003617
+# date
+Sep  4   00:06:40 CEST 2018
+```
+
+
+#### 5.5 Check rsync errors
+This option has two outputs as well: -check-rsync  and -check-rsync-l 
+Output without error:
+```
+# ./ebackup.sh -check-rsync-l
+``` 
+If everything is okay, there is no output 
+and
+```
+# ./ebackup.sh -check-rsync
+0
+```
+
+Output with error:
+```
+./ebackup.sh -check-rsync
+1
+```
+```
+# ./ebackup.sh -check-rsync-l 
+ssh: connect to host 127.0.0.1 port 22: Connection refused
+rsync: connection unexpectedly closed (0 bytes received so far) [sender]
+rsync error: unexplained error (code 255) at io.c(226) [sender=3.1.1]
+ssh: connect to host 127.0.0.1 port 22: Connection refused
+ssh: connect to host 127.0.0.1 port 22: Connection refused
+```
+
+
+#### 5.6 Cleanup of archives
+You can force clean your backup storage by use *-clean* option.
+Let’s have a look an example:
+```
+# date
+Wed Oct  3 0:01:26 CEST 2018
+./ebackup.sh -com "ls -al  enigma"
+drwxr-xr-x 7 test test 4096 Oct  2 23:51 ..
+lrwxrwxrwx 1 test test   17 Oct  3 00:36 111-Latest -> 2018-10-03-003617
+drwxrwxr-x 3 test test 4096 Oct  2 23:51 2018-10-02-235115
+drwxrwxr-x 3 test test 4096 Oct  2 23:57 2018-10-02-235704
+drwxrwxr-x 3 test test 4096 Oct  3 00:29 2018-10-03-002936
+drwxrwxr-x 3 test test 4096 Oct  3 00:36 2018-10-03-003617
+```
+
+enigma is my hostname and directory in the backup server. 
+
+I have changed Days variable in the *ebackup.conf* from 3 to 1. 
+```
+grep Days ebackup.conf
+Days=1
+```
+And let’s run clean and see what will happen
+```
+./ebackup.sh -com "ls -al  enigma"
+total 24
+drwxrwxr-x 6 test test 4096 окт  3 00:01 .
+drwxr-xr-x 7 test test 4096 окт  2 23:51 ..
+lrwxrwxrwx 1 test test   17 окт  3 00:36 111-Latest -> 2018-10-03-003617
+drwxrwxr-x 3 test test 4096 окт  3 00:29 2018-10-03-002936
+drwxrwxr-x 3 test test 4096 окт  3 00:36 2018-10-03-003617
+  
+Folders 2018-10-02-235115 and 2018-10-02-235704 were deleted 
+```
+
+>Note: The cleanup always starts after successful backup. 
+
+
+#### 5.7 Backup and Check MySQL
+#### 5.7.1 Backup MySQL database
+The *-backup-mysql* option backs up only [MySQL](#https://www.mysql.com/) database and sends archives to the backup server:
+
+```
+./ebackup.sh -backup-mysql
+root     28770  0.0  0.0   4504  1636 pts/8    S+   01:11   0:00 /bin/sh ./ebackup.sh -backup-mysql
+Start backup
+Rotation is YES
+Start rotating logs
+moving  /var/log/backup.log.6 /var/log/backup.log.7
+moving  /var/log/backup.log.5 /var/log/backup.log.6
+moving  /var/log/backup.log.4 /var/log/backup.log.5
+moving  /var/log/backup.log.3 /var/log/backup.log.4
+moving  /var/log/backup.log.2 /var/log/backup.log.3
+moving  /var/log/backup.log.1 /var/log/backup.log.2
+moving  /var/log/backup.log /var/log/backup.log.1
+Start backup Ср окт 3 01:11:14 CEST 2018
+Start MySQL Dump and send to backup server
+Dumping mysql...Done!
+Dumping sys...Done!
+Dumping test...Done!
+Dumping test01...Done!
+sending incremental file list
+created directory /home/test/enigma/Processing-2018-10-03-011114
+/var/
+/var/db-backup/
+/var/db-backup/mysql.sql.gz
+        256,806 100%    5.62MB/s    0:00:00 (xfr#1, to-chk=3/6)
+/var/db-backup/sys.sql.gz
+         57,378 100%    1.22MB/s    0:00:00 (xfr#2, to-chk=2/6)
+/var/db-backup/test.sql.gz
+         10,550 100%  223.97kB/s    0:00:00 (xfr#3, to-chk=1/6)
+/var/db-backup/test01.sql.gz
+            470 100%    9.77kB/s    0:00:00 (xfr#4, to-chk=0/6)
+
+sent 325,437 bytes  received 173 bytes  651,220.00 bytes/sec
+total size is 325,204  speedup is 1.00
+Start clean
+Finish Ср окт 3 01:11:18 CEST 2018
+Log file:  /var/log/backup.log
+```
+
+Let’s check:
+```
+./ebackup.sh -com "ls -al  enigma"
+total 44
+drwxrwxr-x 11 test test 4096 окт  2 0:01 .
+drwxr-xr-x  7 test test 4096 окт  2 23:51 ..
+lrwxrwxrwx  1 test test   17 окт  3 00:36 111-Latest -> 2018-10-03-003601
+
+drwxrwxr-x  3 test test 4096 окт  3 00:29 2018-10-03-002936
+drwxrwxr-x  3 test test 4096 окт  3 00:36 2018-10-03-003601
+drwxrwxr-x  3 test test 4096 окт  3 01:11 2018-10-03-011114-Only-Mysqldump
+```
+
+```
+./ebackup.sh -com "ls -al  enigma/2018-10-03-011114-Only-Mysqldump/var/db-backup"
+total 336
+drwxrwxr-x 2 test test   4096 окт  3 01:11 .
+drwxrwxr-x 3 test test   4096 окт  3 01:11 ..
+-rw-rw-r-- 1 test test 256806 окт  3 01:11 mysql.sql.gz
+-rw-rw-r-- 1 test test  57378 окт  3 01:11 sys.sql.gz
+-rw-rw-r-- 1 test test    470 окт  3 01:11 test01.sql.gz
+-rw-rw-r-- 1 test test  10550 окт  3 01:11 test.sql.gz
+```
+
+>Note: */var/db-backup* is a path for database backup directory on the local machine. It defines *dbbackuppath* variable in the main configuration file: 
+```
+grep dbbackuppath  ebackup.conf
+dbbackuppath=/var/db-backup/
+```
+
+This way it stores two copies of your data: on the backup server and on a local directory   
+Let’s check it:
+```
+ls -al /var/db-backup/
+total 336
+drwxr-xr-x  2 root root   4096 окт  3 17:11 .
+drwxr-xr-x 14 root root   4096 авг 29 21:31 ..
+-rw-r--r--  1 root root 256807 окт  3 01:26 mysql.sql.gz
+-rw-r--r--  1 root root  57379 окт  3 01:26 sys.sql.gz
+-rw-r--r--  1 root root    473 окт  3 01:26 test01.sql.gz
+-rw-r--r--  1 root root  10550 окт  3 01:26 test.sql.gz
+```
+
+
+#### 5.7.2 Backup MySQL database without sending data to a backup server 
+The *-mysql-dump* option dumps your databases on a local storage (*/var/db-backup* in my case)  
+
+```
+./ebackup.sh -mysql-dump
+Start MySQL Dump
+Dumping mysql...Done!
+Dumping sys...Done!
+Dumping test...Done!
+Dumping test01...Done!
+```
+
+#### 5.7.3 MySQL Check
+
+The *-mysql-check* option starts *“mysqlcheck -A --repair”*
+
+```
+./ebackup.sh -mysql-check
+Start MySQL Check
+mysql.columns_priv                                 OK
+mysql.db                                           OK
+mysql.engine_cost
+note     : The storage engine for the table doesn't support repair
+mysql.event                                        OK
+mysql.func                                         OK
+```
+
+>Note: Use this option only for MyISAM engine 
+
+#### 5.8 Execute command on the remote backup server 
+The *-command* or *-com* options send your command to a remote server and execute it.
+It’s very useful for debugging and saves time on checking your backup. 
+We actively used this option in our examples above. 
+```
+#./ebackup.sh -com "ls -l"
+total 4
+drwxrwxr-x 11 test test 4096 Oct  3 02:11 enigma
+# ./ebackup.sh -com "touch test_file_for_chapter_5.8"
+# ./ebackup.sh -com "ls -l"
+total 4
+drwxrwxr-x 11 test test 4096 Oct  3 02:11 enigma
+-rw-rw-r--  1 test test    0 Oct  3 01:43 test_file_for_chapter_5.8
+```
+
+
+#### 5.9 Create ssh-key 
+
+The *-ssh-keygen* option creates "ssh-key* to access the backup server.
+You should prepare user’s ssh password. 
+Example:
+```
+./ebackup.sh -ssh-keygen  
+	|->  IP backup server  [ 127.0.0.1 ] :
+	|->  User for remote server [ test ] :
+Generating public/private rsa key pair.
+/home/ruslan/.ssh/id_rsa already exists.
+Overwrite (y/n)? n
+Enter password for test@127.0.0.1
+```
+
+#### 5.10 Configuration option 
+The *-configure* option configures your script in the interactive mode. 
+In section 2 this feature is explained 
+In section 3 you can learn how to configure script by editing configuration file.
+
+#### 5.11. Rotation 
+The *-rotation* option handles rotation of the log files. 
+```
+./ebackup.sh -rotate 
+Start rotating logs
+moving  /var/log/backup.log.6 /var/log/backup.log.7
+moving  /var/log/backup.log.5 /var/log/backup.log.6
+moving  /var/log/backup.log.4 /var/log/backup.log.5
+moving  /var/log/backup.log.3 /var/log/backup.log.4
+moving  /var/log/backup.log.2 /var/log/backup.log.3
+moving  /var/log/backup.log.1 /var/log/backup.log.2
+moving  /var/log/backup.log /var/log/backup.log.1
+```
+
+>Note: if this option is turned on, it always starts before copying file to the remote server.
+
+---
+## 6. Troubleshooting 
+>Note: Backup user has to have a *Bash* or *sh* command line interpreter for proper behavior:
+>```
+>./ebackup.sh -com "echo $BASH"
+>/bin/bash
+>FreeBSD operating system has CSH as a default command line interpreter - this will result in unusual issues.  
+
+
+#### 6.1 Rsync error
+ 
+Some common error:
+```
+rsync error: some files vanished before they could be transferred (code 24) at main.c(1668) [generator=3.1.2] 
+```
+
+Sometimes it could happen when data is changing very fast, especially for databases.
+
+
+#### 6.2 MySQL errors
+```
+ ./ebackup.sh -backup-mysql
+root     27798  0.0  0.0   4504  1640 pts/8    S+   01:08   0:00 /bin/sh ./ebackup.sh -backup-mysql
+Start backup
+Rotation is YES
+Start rotating logs
+moving  /var/log/backup.log.6 /var/log/backup.log.7
+moving  /var/log/backup.log.5 /var/log/backup.log.6
+moving  /var/log/backup.log.4 /var/log/backup.log.5
+moving  /var/log/backup.log.3 /var/log/backup.log.4
+moving  /var/log/backup.log.2 /var/log/backup.log.3
+moving  /var/log/backup.log.1 /var/log/backup.log.2
+moving  /var/log/backup.log /var/log/backup.log.1
+Start backup Ср окт 3 01:08:21 CEST 2018
+Start MySQL Dump and send to backup server
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+sending incremental file list
+created directory /home/test/enigma/Processing-2018-10-03-010821
+/var/
+/var/db-backup/
+sent 106 bytes  received 93 bytes  398.00 bytes/sec
+total size is 0  speedup is 0.00
+Start clean
+Finish Ср окт 3 01:08:24 CEST 2018
+Log file:  /var/log/backup.log
+```
+Access denied for user - you have to add permissions to database and configure your ~/.my.cnf file 
+
+
