@@ -390,7 +390,7 @@ drwxrwxr-x 2 test test 4096 Aug 24 01:19 .ssh
 
 ---
 ## 5. Features, Examples
-See the -help option of *./ebackup.sh*:
+See the *-help* option of *./ebackup.sh*:
 ```
 ./ebackup.sh -help
 
@@ -535,7 +535,7 @@ Folders 2018-10-02-235115 and 2018-10-02-235704 were deleted
 >Note: The cleanup always starts after successful backup. 
 
 
-### 5.7 Backup and Check MySQL
+### 5.7 Backup and check MySQL
 ### 5.7.1 Backup MySQL database
 The *-backup-mysql* option backs up only [MySQL](#https://www.mysql.com/) database and sends archives to the backup server:
 
@@ -684,8 +684,8 @@ Enter password for test@127.0.0.1
 
 ### 5.10 Configuration option 
 The *-configure* option configures your script in the interactive mode. 
-In section 2 this feature is explained 
-In section 3 you can learn how to configure script by editing configuration file.
+In [section 2](#2-configuration-by-using-the-script) this feature is explained 
+In [section 3](#3-Configuration-files) you can learn how to configure script by editing configuration file.
 
 ### 5.11. Rotation 
 The *-rotation* option handles rotation of the log files. 
