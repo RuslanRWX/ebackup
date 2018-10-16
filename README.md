@@ -436,7 +436,7 @@ There are two options: *-check* and *-check-l* ( verbose )
 >
 >1 - backup is not okay  
 
--check-l gives you more information  
+-check-l gives you more information.
 
 Output with error:  
 ```
