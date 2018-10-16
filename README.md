@@ -354,7 +354,7 @@ Example:
 /var/www/log/
 ```
 
-### 3.4. Exclude.mysqldb.txt 
+### 3.4. exclude.mysqldb.txt 
 If you set *MySQL* variable to “YES” in the main configuration file (ebackup.conf), script is going to back up all of your databases. You can add name of databases in *exclude.mysqldb.txt* file if you don’t want to back them up. 
 Example:
 ```
