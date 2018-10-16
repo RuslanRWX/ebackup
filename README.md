@@ -60,9 +60,9 @@ Action:
    5.11 [Rotation](#511-rotation)
    
 7. [Troubleshooting](#trableshooting) 
-- [Rsync error](#61-rsync-error)
-- [Error mysql](#62-mysql-errors)
-- [SSH error](#63-ssh-errors) 
+- [Rsync error](#rsync-error)
+- [Error mysql](#mysql-errors)
+- [SSH error](#ssh-errors) 
 
 
 ## Introduction
