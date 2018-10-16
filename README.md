@@ -685,7 +685,7 @@ Enter password for test@127.0.0.1
 ### 5.10 Configuration option 
 The *-configure* option configures your script in the interactive mode. 
 In [section 2](#2-configuration-by-using-the-script) this feature is explained 
-In [section 3](#3-Configuration-files) you can learn how to configure script by editing configuration file.
+In [section 3.1](#31-ebackup-conf) you can learn how to configure script by editing configuration file.
 
 ### 5.11. Rotation 
 The *-rotation* option handles rotation of the log files. 
