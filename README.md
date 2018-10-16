@@ -5,8 +5,7 @@
 - [Description](#description)
 
 Action:
-1. [Installation](#1-installation)
-
+1. [Installation](#1-installation)\s\s
     1.1 [Before installation](#11-before-installation)
     
     1.2 [Clone project from Github repository](#)
