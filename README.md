@@ -427,11 +427,17 @@ backup is not running
 
 ### 5.4 Check status of archives
 There are two options: *-check* and *-check-l* ( verbose ) 
+
 *-check* option returns boolean value 0 or 1
-where:
-0 - backup is okay 
-1 - backup is not okay  
+
+>where:
+>
+>0 - backup is okay 
+>
+>1 - backup is not okay  
+
 -check-l gives you more information  
+
 Output with error:  
 ```
 ./ebackup.sh -check-l  
