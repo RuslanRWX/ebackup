@@ -711,7 +711,7 @@ moving  /var/log/backup.log /var/log/backup.log.1
 >FreeBSD operating system has CSH as a default command line interpreter - this will result in unusual issues.  
 
 
-### 6.1 Rsync error
+* ### Rsync error
  
 Some common error:
 ```
@@ -721,7 +721,7 @@ rsync error: some files vanished before they could be transferred (code 24) at m
 Sometimes it could happen when data is changing very fast, especially for databases.
 
 
-### 6.2 MySQL errors
+* ### MySQL errors
 ```
  ./ebackup.sh -backup-mysql
 root     27798  0.0  0.0   4504  1640 pts/8    S+   01:08   0:00 /bin/sh ./ebackup.sh -backup-mysql
@@ -751,7 +751,7 @@ Log file:  /var/log/backup.log
 Access denied for user - you have to add permissions to database and configure your ~/.my.cnf file 
 
 
-### 6.3 SSH errors 
+* ### SSH errors 
 ```
 ssh: connect to host 127.0.0.1 port 22: Connection refused
 rsync: connection unexpectedly closed (0 bytes received so far) [sender]
@@ -775,5 +775,3 @@ Welcome to Linux Mint 18.3 Sylvia (GNU/Linux 4.13.0-32-generic x86_64)
 Last login: Tue Oct  2 01:53:33 2018 from 127.0.0.1
 test@enigma ~ $ 
 ```
-
-
