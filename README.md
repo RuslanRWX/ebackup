@@ -59,7 +59,7 @@ Action:
    
    5.11 [Rotation](#511-rotation)
    
-7. [Troubleshooting](#6-trableshooting) 
+7. [Troubleshooting](#6-troubleshooting) 
 - [Rsync error](#rsync-error)
 - [Error mysql](#mysql-errors)
 - [SSH error](#ssh-errors) 
