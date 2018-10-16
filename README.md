@@ -108,7 +108,7 @@ exclude.mysqldb.txt - the script backups all of a databases but you can exclude 
 
 
 
-#### 1.1 Before installation 
+### 1.1 Before installation 
 
 >Note: You have to have a remote backup server to store your archives.
 
@@ -129,7 +129,7 @@ Limit count of backup copies depends on a storage capacity on the remote backup 
 
 
 Now start installation and configuration 
-#### 1.2 Clone project from GitHub repository: 
+### 1.2 Clone project from GitHub repository: 
 
 >Note: Create a directory where you want to store script, for example in your home directory:
 ```bash cd & mkdir bin & cd bin```  
@@ -139,7 +139,7 @@ Git clone:
 git clone https://github.com/ruslansvs2/ebackup.git 
 ```
 
-#### 1.3 Go to directory and list files
+### 1.3 Go to directory and list files
 ```bash
 cd ebackup && ls -la
 -rw-r--r--  1 ruslan ruslan   768 Aug 25 23:21 ebackup.conf
@@ -299,7 +299,7 @@ rotateQu=7
 ---
 ## 3. Edit the main configuration file 
 
-#### 3.1 ebackup.conf 
+### 3.1 ebackup.conf 
 Let’s have a look at the *ebackup.conf* file and edit it.
 >Note: In section 2 we showed how to make changes in this file in interactive mode by using -configure flag (./ebackup.sh -configure). You can use this way if it is easier for you. 
 
@@ -327,7 +327,7 @@ vim ebackup.conf
 |rotateQu          | Specifies maximum amount of the log files before deleting the excess ones. Default value: 7.
 
 
-#### 3.2 files.txt
+### 3.2 files.txt
 *files.txt* defines which files and directories are going to be backed up.
 Example:
 ```
@@ -337,7 +337,7 @@ Example:
 /home/user/
 ```
     
-#### 3.3 files.exclude.txt 
+### 3.3 files.exclude.txt 
 In this file you can exclude some directories. 
 Example:
 ```
@@ -345,7 +345,7 @@ Example:
 /var/www/log/
 ```
 
-#### 3.4. Exclude.mysqldb.txt 
+### 3.4. Exclude.mysqldb.txt 
 If you set *MySQL* variable to “YES” in the main configuration file (ebackup.conf), script is going to back up all of your databases. You can add name of databases in *exclude.mysqldb.txt* file if you don’t want to back them up. 
 Example:
 ```
@@ -356,7 +356,7 @@ test
 ---
 ## 4. Testing script 
 
-#### 4.1 Connection test
+### 4.1 Connection test
 To check your configuration, you can use some simple commands, such as: *./ebackup -com “ls -al”*. 
 The -com flag sends command to a backup server.   
 Look below to see output: 
@@ -385,7 +385,7 @@ See the -help option of *./ebackup.sh*:
 
 ```
 
-#### 5.1 Start Backup
+### 5.1 Start Backup
 The flag *-backup* will start backup process.
 
 ```
@@ -414,17 +414,17 @@ etc/adduser.conf
 >Note: It is a default option for backing up your file system.  
 
 
-#### 5.2 Start full backup
+### 5.2 Start full backup
 
 ```./ebackup.sh -backup-full``` - output should be the same as above 
 
-#### 5.3 Check status
+### 5.3 Check status
 ```
 ./ebackup.sh -status
 backup is not running
 ```
 
-#### 5.4 Check status of archives
+### 5.4 Check status of archives
 There are two options: -check and -check-l ( verbose ) 
 -check option returns boolean value 0 or 1
 where:
@@ -451,7 +451,7 @@ Sep  4   00:06:40 CEST 2018
 ```
 
 
-#### 5.5 Check rsync errors
+### 5.5 Check rsync errors
 This option has two outputs as well: -check-rsync  and -check-rsync-l 
 Output without error:
 ```
@@ -479,7 +479,7 @@ ssh: connect to host 127.0.0.1 port 22: Connection refused
 ```
 
 
-#### 5.6 Cleanup of archives
+### 5.6 Cleanup of archives
 You can force clean your backup storage by use *-clean* option.
 Let’s have a look an example:
 ```
@@ -517,8 +517,8 @@ Folders 2018-10-02-235115 and 2018-10-02-235704 were deleted
 >Note: The cleanup always starts after successful backup. 
 
 
-#### 5.7 Backup and Check MySQL
-#### 5.7.1 Backup MySQL database
+### 5.7 Backup and Check MySQL
+### 5.7.1 Backup MySQL database
 The *-backup-mysql* option backs up only [MySQL](#https://www.mysql.com/) database and sends archives to the backup server:
 
 ```
@@ -604,7 +604,7 @@ drwxr-xr-x 14 root root   4096 авг 29 21:31 ..
 ```
 
 
-#### 5.7.2 Backup MySQL database without sending data to a backup server 
+### 5.7.2 Backup MySQL database without sending data to a backup server 
 The *-mysql-dump* option dumps your databases on a local storage (*/var/db-backup* in my case)  
 
 ```
@@ -616,7 +616,7 @@ Dumping test...Done!
 Dumping test01...Done!
 ```
 
-#### 5.7.3 MySQL Check
+### 5.7.3 MySQL Check
 
 The *-mysql-check* option starts *“mysqlcheck -A --repair”*
 
@@ -633,7 +633,7 @@ mysql.func                                         OK
 
 >Note: Use this option only for MyISAM engine 
 
-#### 5.8 Execute command on the remote backup server 
+### 5.8 Execute command on the remote backup server 
 The *-command* or *-com* options send your command to a remote server and execute it.
 It’s very useful for debugging and saves time on checking your backup. 
 We actively used this option in our examples above. 
@@ -649,7 +649,7 @@ drwxrwxr-x 11 test test 4096 Oct  3 02:11 enigma
 ```
 
 
-#### 5.9 Create ssh-key 
+### 5.9 Create ssh-key 
 
 The *-ssh-keygen* option creates "ssh-key* to access the backup server.
 You should prepare user’s ssh password. 
@@ -664,12 +664,12 @@ Overwrite (y/n)? n
 Enter password for test@127.0.0.1
 ```
 
-#### 5.10 Configuration option 
+### 5.10 Configuration option 
 The *-configure* option configures your script in the interactive mode. 
 In section 2 this feature is explained 
 In section 3 you can learn how to configure script by editing configuration file.
 
-#### 5.11. Rotation 
+### 5.11. Rotation 
 The *-rotation* option handles rotation of the log files. 
 ```
 ./ebackup.sh -rotate 
@@ -694,7 +694,7 @@ moving  /var/log/backup.log /var/log/backup.log.1
 >FreeBSD operating system has CSH as a default command line interpreter - this will result in unusual issues.  
 
 
-#### 6.1 Rsync error
+### 6.1 Rsync error
  
 Some common error:
 ```
@@ -704,7 +704,7 @@ rsync error: some files vanished before they could be transferred (code 24) at m
 Sometimes it could happen when data is changing very fast, especially for databases.
 
 
-#### 6.2 MySQL errors
+### 6.2 MySQL errors
 ```
  ./ebackup.sh -backup-mysql
 root     27798  0.0  0.0   4504  1640 pts/8    S+   01:08   0:00 /bin/sh ./ebackup.sh -backup-mysql
