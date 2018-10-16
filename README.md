@@ -309,6 +309,8 @@ rotateQu=7
 ## 3. Configuration files
 
 ### 3.1 ebackup.conf 
+*ebackup.conf* is the main configuration file of script
+
 Let’s have a look at the *ebackup.conf* file and edit it.
 >Note: In section 2 we showed how to make changes in this file in interactive mode by using -configure flag (./ebackup.sh -configure). You can use this way if it is easier for you. 
 
