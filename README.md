@@ -245,7 +245,7 @@ You can specify IP or hostname of backup server. In my example, I added localhos
 
 ```This output of df -h command can help you choose a storage for databases backup:``` - This output can help you choose a directory for backup databases.
 
-```Backup path for MySQL dump :[/var/db-backup/]``` - choose a directory for MySQL dump files 
+```Backup path for MySQL dump :[/var/db-backup/]``` - choose a directory for MySQL dump files.
 
 ```Do you want to start mysqlcheck before dumping:[NO]  ``` - This can be useful for MyISAM data storage engine. If you don’t use it then leave the parameter as NO.
 
