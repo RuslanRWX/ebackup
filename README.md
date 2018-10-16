@@ -413,13 +413,11 @@ etc/adduser.conf
 
 >Note: It is a default option for backing up your file system.  
 
-
 ### 5.2 Start full backup
 
 ```./ebackup.sh -backup-full```
 
 Output should be the same as above. 
-
 
 ### 5.3 Check status
 ```
@@ -428,8 +426,8 @@ backup is not running
 ```
 
 ### 5.4 Check status of archives
-There are two options: -check and -check-l ( verbose ) 
--check option returns boolean value 0 or 1
+There are two options: *-check* and *-check-l* ( verbose ) 
+*-check* option returns boolean value 0 or 1
 where:
 0 - backup is okay 
 1 - backup is not okay  
