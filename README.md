@@ -709,7 +709,7 @@ moving  /var/log/backup.log /var/log/backup.log.1
 >./ebackup.sh -com "echo $BASH"
 >/bin/bash
 >```
->FreeBSD operating system has CSH as a default command line interpreter - this will result in unusual issues.
+>FreeBSD operating system has *csh* as a default command line interpreter - this will result in unusual issues.
 
 
 * ### Rsync error
