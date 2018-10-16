@@ -10,55 +10,59 @@ Action:
 
     1.1 [Before installation](#11-before-installation)
     
-    1.2 [Clone project from Github repository](#)
+    1.2 [Clone project from Github repository](#12-clone-project-from-github-repository)
     
-    1.2 [Go to directory and list files](#)
+    1.2 [Go to directory and list files](#13-go-to-directory-and-list-files)
     
-2. [Configuration by using the script](#)
-3. [Edit the main configuration file](#)
+2. [Configuration by using the script](#2-configuration-by-using-the-script)
+3. [Edit the main configuration file](#3-edit-the-main-configuration-file)
    
-   3.1 [ebackup.conf](#)
+   3.1 [ebackup.conf](#31-ebackupconf)
    
-   3.2 [files.txt](#)
+   3.2 [files.txt](#32-filestxt)
    
-   3.3 [files.exclude.txt](#) 
+   3.3 [files.exclude.txt](#33-filesexcludetxt) 
    
-   3.4 [exclude.mysqldb.txt](#) 
+   3.4 [exclude.mysqldb.txt](#34-excludemysqldbtxt) 
    
-4. [Testing script](#)
+4. [Testing script](#4-testing-script)
 
-   4.1 [Test to proper connect](#)
+   4.1 [Test to proper connect](#41-connection-test)
    
-5. [Featches, Examples](#) 
+5. [Featches, Examples](#5-features-examples) 
    
-   5.1 [Start backup](#)
+   5.1 [Start backup](#51-start-backup)
    
-   5.2 [Start full backup](#)
+   5.2 [Start full backup](#52-start-full-backup)
    
-   5.3 [Check status](#)
+   5.3 [Check status](#53-check-status)
    
-   5.4 [Check status of archives](#)
+   5.4 [Check status of archives](#54-check-status-of-archives)
    
-   5.5 [Check rsync errors](#)
+   5.5 [Check rsync errors](#55-check-rsync-errors)
    
-   5.6 [Clean](#)
+   5.6 [Clean of archives](#56-cleanup-of-archives)
    
-   5.7 [Backup and check MySQL](#)
-6. [Backup](#backup)
+   5.7 [Backup and check MySQL](#57-backup-and-check-mysql)
    
-   6.1 [Backup without sent data to a backup server](#) 
+   5.7.1 [Backup MySQL database](#571-backup-mysql-database)
    
-   6.2 [MySQL Check](#)
+   5.7.2 [Backup without sent data to a backup server](##572-backup-mysql-database-without-sending-data-to-a-backup-server) 
    
-   6.3 [Execute command on the remote backup server](#) 
+   5.7.3 [MySQL Check](#573-mysql-check)
    
-   6.4 [Configuration option](#) 
+   5.8 [Execute command on the remote backup server](#58-execute-command-on-the-remote-backup-server) 
    
-   6.5 [Rotation](#) 
+   5.9 [Create ssh-key](#59-create-ssh-key())
+  
+   5.10 [Configuration optoin](#510-configuration-option)
+   
+   5.11 [Rotation](#511-rotation)
+   
 7. [Troubleshooting](#trableshooting) 
-- [Rsync error](#)
-- [Error mysql](#)
-- [SSH error](#) 
+- [Rsync error](#61-rsync-error)
+- [Error mysql](#62-mysql-errors)
+- [SSH error](#63-ssh-errors) 
 
 
 ## Introduction
@@ -744,5 +748,31 @@ Finish Ср окт 3 01:08:24 CEST 2018
 Log file:  /var/log/backup.log
 ```
 Access denied for user - you have to add permissions to database and configure your ~/.my.cnf file 
+
+
+### 6.3 SSH errors 
+```
+ssh: connect to host 127.0.0.1 port 22: Connection refused
+rsync: connection unexpectedly closed (0 bytes received so far) [sender]
+rsync error: unexplained error (code 255) at io.c(226) [sender=3.1.1]
+```
+
+You have to check your ssh connection to a remote server. 
+
+Example:
+```
+ssh test@127.0.0.1
+ssh: connect to host 127.0.0.1 port 22: Connection refused
+```
+
+Your ssh-client has to have access without password.
+``` 
+ssh test@127.0.0.1
+Welcome to Linux Mint 18.3 Sylvia (GNU/Linux 4.13.0-32-generic x86_64)
+
+ * Documentation:  https://www.linuxmint.com
+Last login: Tue Oct  2 01:53:33 2018 from 127.0.0.1
+test@enigma ~ $ 
+```
 
 
