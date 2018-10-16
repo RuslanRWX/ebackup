@@ -416,7 +416,8 @@ etc/adduser.conf
 
 ### 5.2 Start full backup
 
-```./ebackup.sh -backup-full``` - output should be the same as above 
+```./ebackup.sh -backup-full```
+Output should be the same as above. 
 
 ### 5.3 Check status
 ```
