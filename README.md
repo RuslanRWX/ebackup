@@ -420,6 +420,7 @@ etc/adduser.conf
 
 Output should be the same as above. 
 
+
 ### 5.3 Check status
 ```
 ./ebackup.sh -status
