@@ -453,7 +453,7 @@ Sep  4   00:06:40 CEST 2018
 
 
 ### 5.5 Check rsync errors
-This option has two outputs as well: -check-rsync  and -check-rsync-l 
+This option has two outputs as well: *-check-rsync*  and *-check-rsync-l* 
 Output without error:
 ```
 # ./ebackup.sh -check-rsync-l
