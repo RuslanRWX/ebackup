@@ -70,7 +70,7 @@ Action:
 The *EBackup* is an easy backup script written in Shell (sh) for Linux/Unix operating systems. The EBackup is easy for configuration and installing. The source of script (*ebackup.sh*) is broken into functions, therefore, you can add your own function without a big effort. 
 
 ## Description
-The *EBackup* is created based on Rsync and should be installed on machines that you want to back up. The *ebackup.sh* is connected to a remote backup server through SSH, therefore, you need access to some user and that user has to have command-line interpreter. For working properly, command-line interpreter have to be *sh* or *bash*. For example, default shell on [FreeBSD](#https://www.freebsd.org/) could be csh, in that case the *ebackup.sh* script wouldn’t work as expected. 
+The *EBackup* is created based on Rsync and should be installed on machines that you want to back up. The *ebackup.sh* is connected to a remote backup server through SSH, therefore, you need access to some user and that user has to have command-line interpreter. For working properly, command-line interpreter have to be *sh* or *bash*. For example, default shell on [FreeBSD](#https://www.freebsd.org/) could be *csh*, in that case the *ebackup.sh* script wouldn’t work as expected. 
 
 
 >Note: I highly recommend use sh or bash on a remote backup server.
