@@ -15,7 +15,7 @@ Action:
     1.2 [Go to directory and list files](#13-go-to-directory-and-list-files)
     
 2. [Configuration by using the script](#2-configuration-by-using-the-script)
-3. [Edit the main configuration file](#3-edit-the-main-configuration-file)
+3. [Configuration files](#3configuration-files)
    
    3.1 [ebackup.conf](#31-ebackupconf)
    
@@ -306,7 +306,7 @@ rotate=YES
 rotateQu=7
 ```
 ---
-## 3. Edit the main configuration file 
+## 3. Configuration files
 
 ### 3.1 ebackup.conf 
 Let’s have a look at the *ebackup.conf* file and edit it.
