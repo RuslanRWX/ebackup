@@ -704,7 +704,7 @@ moving  /var/log/backup.log /var/log/backup.log.1
 
 ---
 ## 6. Troubleshooting 
->Note: Backup user has to have a *Bash* or *sh* command line interpreter for proper behavior:
+>Note: Backup user has to have a *bash* or *sh* command line interpreter for proper behavior:
 >```
 >./ebackup.sh -com "echo $BASH"
 >/bin/bash
