@@ -4,13 +4,16 @@
 - [Introduction](#introduction)
 - [Description](#description)
 
+
 Action:
-1. [Installation](#1-installation)\s\s
+1. [Installation](#1-installation)
+
     1.1 [Before installation](#11-before-installation)
     
     1.2 [Clone project from Github repository](#)
     
     1.2 [Go to directory and list files](#)
+    
 2. [Configuration by using the script](#)
 3. [Edit the main configuration file](#)
    
@@ -21,10 +24,12 @@ Action:
    3.3 [files.exclude.txt](#) 
    
    3.4 [exclude.mysqldb.txt](#) 
+   
 4. [Testing script](#)
 
    4.1 [Test to proper connect](#)
-5. [Featches](#) 
+   
+5. [Featches, Examples](#) 
    
    5.1 [Start backup](#)
    
