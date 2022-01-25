@@ -151,7 +151,7 @@ SSHkey () {
 	: ${UserParm:="$DefU"}
 ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
 echo "Enter password for "$UserParm"@"$IPParm
-cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys; chmod 750 .ssh"
+cat ~/.ssh/id_rsa.pub | ssh -p${Port} $UserParm@$IPParm "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys;chmod 755 ~/.ssh;chmod 644 ~/.ssh/authorized_keys "
 }
 
 Configure () {
