@@ -125,7 +125,7 @@ ssh -o ConnectTimeout=10 -p${Port}  $bkusr@$bksrv "if [ -d ~/${dir}/${SUFFIXDump
 
 CheckRsync () {
 Res=$(grep -i -E  "Disk quota|Broken pipe|rsync error" $Log) 
-if [ ! -n "$Res" ]; then  { echo '0'; } else { echo '1'; } fi
+if [[ ! -n "$Res" ]]; then  { echo '0'; } else { echo '1'; } fi
 }
 
 CheckRsyncl () {
@@ -311,7 +311,7 @@ PidFun () {
 #find $Pid -mtime +2 -exec rm -r '{}' \; 2>/dev/null
 ps uax | grep -v grep | grep $0 || find $Pid -exec rm -r '{}' \;
 echo $SUFFIX > $Path/lastback.txt
-if [ -f $Pid ]
+if [[ -f $Pid ]]
 then
     echo "backup already running, shutting down! If you want to start you should do rm "$Pid
     exit 1
