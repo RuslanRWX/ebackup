@@ -1,18 +1,18 @@
-#!/bin/sh
-# Copyright (c) 2014 Ruslan Variushkin,  email:ruslan@host4.biz
+#!/usr/bin/env bash
+# Copyright (c) 2014 Ruslan Variushkin,  email:ruslansvs2@gmail.com
 #
-###################################### Version 2.2.4 #######################################################
+###################################### Version 2.2.5 #######################################################
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/local/ssl/bin
 checkr=$(whereis rsync | grep bin | awk -F":" '{ print $2 }')
-if [ "$checkr" = "" ]; then { echo "ERROR: You should install rsync!"; exit 1;  } fi
+if [[ "$checkr" = "" ]]; then { echo "ERROR: You should install rsync!"; exit 1;  } fi
 Path=$( cd "$( dirname "$0" )" && pwd )
 . $Path/ebackup.conf
 
 trap "rm $Pid; exit" 1 2 15
 #logger -i $Pid
 os=$(uname)
-if [ "$os" = "FreeBSD" ]; then { download="fetch"; }; fi
-if [ "$os" = "Linux" ]; then { download="wget"; } fi
+if [[ "$os" = "FreeBSD" ]]; then { download="fetch"; }; fi
+if [[ "$os" = "Linux" ]]; then { download="wget"; } fi
 
 createmycnf() { 
 	echo "create my.cnf"
@@ -34,16 +34,16 @@ createmycnf() {
 }
 
 MySQLCheck() {
-    if [ ! -f ~/.my.cnf ]; then { createmycnf;   } fi 
+    if [[ ! -f ~/.my.cnf ]]; then { createmycnf;   } fi 
 	mysqlcheck -A --repair
 }
 
 MySQLDump () {
-if [ ! -d $dbbackuppath ]; then { /bin/mkdir -p $dbbackuppath;  } fi 
-    if [ ! -f ~/.my.cnf ]; then { createmycnf;   } fi 
+if [[ ! -d $dbbackuppath ]]; then { /bin/mkdir -p $dbbackuppath;  } fi 
+    if [[ ! -f ~/.my.cnf ]]; then { createmycnf;   } fi 
     mysql -e "SHOW DATABASES;" | sed '1d'   > /tmp/backup.mysqldb.log
-if [ "$os" = "FreeBSD" ]; then { sedkey='-i ""'; }; fi
-if [ "$os" = "Linux" ]; then { sedkey='-i'; } fi
+if [[ "$os" = "FreeBSD" ]]; then { sedkey='-i ""'; }; fi
+if [[ "$os" = "Linux" ]]; then { sedkey='-i'; } fi
 
     	while  read line
 	do
@@ -67,17 +67,17 @@ MongoDump () {
 
 Arsync () {
 	Acount=$(ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir; ls -F " | wc -l)
-	if [ "$OnlyMysql" = "OnlyM"  ]
+	if [[ "$OnlyMysql" = "OnlyM"  ]]
 	then
 		ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir && mv Processing-$SUFFIX $SUFFIX-Only-Mysqldump"
 	else
 		ssh -p${Port} $bkusr@$bksrv "cd ~/$dir && mv Processing-$SUFFIX $SUFFIX && rm -f 111-Latest && ln -s $SUFFIX 111-Latest"
 	fi
-if [ "$Acount" -gt "$Days" ]; then { echo "Start clean"; ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir; find . -type d -mtime +$Days -maxdepth 1 -exec rm -r '{}' \;"; } fi
+if [[ "$Acount" -gt "$Days" ]]; then { echo "Start clean"; ssh -p${Port}  $bkusr@$bksrv "cd ~/$dir; find . -type d -mtime +$Days -maxdepth 1 -exec rm -r '{}' \;"; } fi
 }
 
 StoreBackup () {
-ssh -p${Port} $bkusr@$bksrv "if [ ! -d ~/$dir ]; then { /bin/mkdir -p ~/$dir;  } fi"    
+ssh -p${Port} $bkusr@$bksrv "if [[ ! -d ~/$dir ]]; then { /bin/mkdir -p ~/$dir;  } fi"    
     rsync -vbrltz --progress -e "ssh -p${Port}" \
     --no-p --no-g --chmod=ugo=rwX \
     --delete \
@@ -90,7 +90,7 @@ ssh -p${Port} $bkusr@$bksrv "if [ ! -d ~/$dir ]; then { /bin/mkdir -p ~/$dir;  }
 
 	        
 StoreBackupInc () {
-ssh -p${Port}  $bkusr@$bksrv "if [ ! -d ~/$dir ]; then { /bin/mkdir -p ~/$dir;  } fi"    
+ssh -p${Port}  $bkusr@$bksrv "if [[ ! -d ~/$dir ]]; then { /bin/mkdir -p ~/$dir;  } fi"    
     rsync -brltz --progress -e "ssh -p${Port}"  \
     --no-p --no-g --chmod=ugo=rwX \
     --delete \
@@ -103,7 +103,7 @@ ssh -p${Port}  $bkusr@$bksrv "if [ ! -d ~/$dir ]; then { /bin/mkdir -p ~/$dir;  
 }
 
 StoreBackupMysql () {
-ssh -p${Port}  $bkusr@$bksrv "if [ ! -d ~/$dir ]; then { /bin/mkdir -p ~/$dir;  } fi"    
+ssh -p${Port}  $bkusr@$bksrv "if [[ ! -d ~/$dir ]]; then { /bin/mkdir -p ~/$dir;  } fi"    
     rsync -vbrltz --progress -e "ssh -p${Port}" \
     --no-p --no-g --chmod=ugo=rwX \
     --delete \
@@ -269,8 +269,8 @@ echo "Each line of a crontab file represents a job, and looks like this::
     rm /tmp/PathParm.txt
 
 
-    if [ "$os" = "FreeBSD" ]; then { sedkey='-i .back'; }; fi
-    if [ "$os" = "Linux" ]; then { sedkey='-i.back '; } fi
+    if [[ "$os" = "FreeBSD" ]]; then { sedkey='-i .back'; }; fi
+    if [[ "$os" = "Linux" ]]; then { sedkey='-i.back '; } fi
 
 
     sed  $sedkey "s/$IPold/bksrv=$IPParm/; s/$UPold/bkusr=$UserParm/; s/$Pold/dbbackuppath=$PathParm/; s/$Dayold/Days=$DayParm/; s/$MPold/MySQL=$MysqlParm/; s/$MCPold/MySQLCheck=$MysqlCParm/; s/$Mdbold/MongoDB=$MongoParm/;" $Path/ebackup.conf
@@ -283,22 +283,22 @@ echo "Each line of a crontab file represents a job, and looks like this::
 
 RotateLog () {
 echo "Start rotating logs"
-if [ -f "${Log}.${rotateQu}" ]; then { rm ${Log}.${rotateQu}; } fi
+if [[ -f "${Log}.${rotateQu}" ]]; then { rm ${Log}.${rotateQu}; } fi
 rotateFOlder=$rotateQu
 	while [ 0 -ne $rotateFOlder  ]
 	do     	
 		rotateFLaster=$rotateFOlder
 		rotateFOlder=$((${rotateFLaster} - 1))
-		        if [ $rotateFOlder -eq 0 ]; 
+		        if [[ $rotateFOlder -eq 0 ]]; 
 			then 
-				if [ -f "${Log}" ]
+				if [[ -f "${Log}" ]]
 				then
 				   
 					 echo "moving  "${Log} ${Log}.${rotateFLaster}
 					 mv ${Log} ${Log}.${rotateFLaster}
 				fi
 				else
-				if [ -f "${Log}.${rotateFOlder}" ]
+				if [[ -f "${Log}.${rotateFOlder}" ]]
 				then
 					echo "moving  "${Log}.${rotateFOlder} ${Log}.${rotateFLaster}
 					mv ${Log}.${rotateFOlder} ${Log}.${rotateFLaster}
@@ -424,7 +424,7 @@ Finish
     CheckRsyncl
     ;;
     -status)
-	    if [ -f $Pid ]; then { echo "backup is running as pid "$(cat $Pid); } else { echo "backup is not running";  } fi
+	    if [[ -f $Pid ]]; then { echo "backup is running as pid "$(cat $Pid); } else { echo "backup is not running";  } fi
     ;;
         *)
 	help
