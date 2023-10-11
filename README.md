@@ -145,7 +145,7 @@ Now start installation and configuration
 
 Git clone:
 ```bash
-git clone https://github.com/ruslansvs2/ebackup.git 
+git clone https://github.com/RuslanRWX/ebackup.git 
 ```
 
 ### 1.3 Go to directory and list files
